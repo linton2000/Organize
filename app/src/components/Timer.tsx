@@ -15,9 +15,5 @@ export default function Timer(props: { startTime: Date }) {
 
     let timeDiff: number = myTime.getTime() - props.startTime.getTime();
     let timeStr = new Date(timeDiff).toISOString().substring(11, 19);
-    return (
-        <div>
-            <h1>{timeStr}</h1>
-        </div>
-    );
+    return <h1>{timeStr}</h1>;
 }
