@@ -1,45 +1,23 @@
-import { Component } from "react";
+import { useEffect, useState } from "react";
 
-type MyState = { currentTime: Date };
-export default class Timer extends Component<{}, MyState> {
-    startTime: Date;
-    endTime: Date | null = null;
-    intervalID: any;
+export default function Timer(props: { startTime: Date }) {
+    const [myTime, setMyTime] = useState(new Date());
 
-    constructor(props: any) {
-        super(props);
-        this.startTime = new Date();
-        this.state = { currentTime: new Date() };
+    useEffect(() => {
+        var timerID = setInterval(() => tick(), 1000);
+
+        return () => clearInterval(timerID);
+    });
+
+    function tick() {
+        setMyTime(new Date());
     }
 
-    componentDidMount() {
-        this.intervalID = setInterval(() => this.tick(), 1000);
-    }
-
-    tick() {
-        this.setState({
-            currentTime: new Date(),
-        });
-        console.log("Logging");
-    }
-
-    end() {
-        clearInterval(this.intervalID);
-        this.endTime = new Date();
-    }
-
-    render() {
-        let timeDiff: number =
-            this.state.currentTime.getTime() - this.startTime.getTime();
-        let dateDiff: Date = new Date(timeDiff);
-        let timeStr: string =
-            dateDiff.getMinutes().toString() +
-            ": " +
-            dateDiff.getSeconds().toString();
-        return (
-            <div>
-                <h1>{timeStr}</h1>
-            </div>
-        );
-    }
+    let timeDiff: number = myTime.getTime() - props.startTime.getTime();
+    let timeStr = new Date(timeDiff).toISOString().substring(11, 19);
+    return (
+        <div>
+            <h1>{timeStr}</h1>
+        </div>
+    );
 }
