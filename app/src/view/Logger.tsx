@@ -1,49 +1,55 @@
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { Component, ReactElement } from "react";
 import SessionLogs from "../model/SessionLogs";
 import Timer from "../controller/Timer";
+import SubjectSelector from "./SubjectSelector";
 
 type MyState = {
     isLogging: boolean;
 };
 export default class Logger extends Component<{}, MyState> {
     logs: SessionLogs;
+    subjectSelector: SubjectSelector;
 
-    constructor(props: any) {
+    constructor(props: {} | Readonly<{}>) {
         super(props);
         this.logs = new SessionLogs();
+        this.subjectSelector = new SubjectSelector(props);
         this.state = { isLogging: false };
         this.startTimer = this.startTimer.bind(this);
         this.endTimer = this.endTimer.bind(this);
     }
 
     startTimer() {
-        this.logs.startSession();
+        let subject: string | null = this.subjectSelector.getSubject();
+        if (subject != null) this.logs.startSession(subject);
         this.setState({ isLogging: true });
     }
 
     endTimer() {
         this.logs.endSession();
         this.setState({ isLogging: false });
-        localStorage.setItem("timerLogs", JSON.stringify(this.logs));
+        localStorage.settem("timerLogs", JSON.stringify(this.logs));
     }
 
     render() {
         let res: ReactElement;
         if (this.state.isLogging) {
             res = (
-                <div>
+                <Stack spacing={3}>
                     <Timer startTime={new Date()} />
-                    <ButtonGroup variant="outlined">
-                        <Button color="warning" onClick={this.endTimer}>
-                            End Session
-                        </Button>
-                    </ButtonGroup>
-                </div>
+                    <Button
+                        variant="outlined"
+                        color="warning"
+                        onClick={this.endTimer}
+                    >
+                        End Session
+                    </Button>
+                </Stack>
             );
         } else {
             res = (
-                <div>
+                <Stack spacing={3}>
                     <h1>00:00:00</h1>
                     <Button
                         variant="outlined"
@@ -52,7 +58,8 @@ export default class Logger extends Component<{}, MyState> {
                     >
                         Start Session
                     </Button>
-                </div>
+                    {this.subjectSelector.render()}
+                </Stack>
             );
         }
         return res;

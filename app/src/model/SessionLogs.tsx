@@ -7,8 +7,8 @@ export default class SessionLogs {
         this.sessions = [];
     }
 
-    startSession() {
-        this.sessions.push(new Session(new Date()));
+    startSession(subject: string) {
+        this.sessions.push(new Session(new Date(), subject));
     }
 
     endSession() {
