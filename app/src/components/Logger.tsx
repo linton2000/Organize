@@ -1,26 +1,31 @@
 import { Button, ButtonGroup } from "@mui/material";
 import { Component, ReactElement } from "react";
+import SessionList from "./SessionList";
 import Timer from "./Timer";
 
 type MyState = {
     isLogging: boolean;
 };
 export default class Logger extends Component<{}, MyState> {
+    logs: SessionList;
+
     constructor(props: any) {
         super(props);
-        this.state = {
-            isLogging: false,
-        };
+        this.logs = new SessionList();
+        this.state = { isLogging: false };
         this.startTimer = this.startTimer.bind(this);
-        this.resetTimer = this.resetTimer.bind(this);
+        this.endTimer = this.endTimer.bind(this);
     }
 
     startTimer() {
+        this.logs.startSession();
         this.setState({ isLogging: true });
     }
 
-    resetTimer() {
+    endTimer() {
+        this.logs.endSession();
         this.setState({ isLogging: false });
+        console.log(this.logs);
     }
 
     render() {
@@ -30,8 +35,8 @@ export default class Logger extends Component<{}, MyState> {
                 <div>
                     <Timer startTime={new Date()} />
                     <ButtonGroup variant="outlined">
-                        <Button color="warning" onClick={this.resetTimer}>
-                            Reset
+                        <Button color="warning" onClick={this.endTimer}>
+                            End Session
                         </Button>
                     </ButtonGroup>
                 </div>
@@ -45,7 +50,7 @@ export default class Logger extends Component<{}, MyState> {
                         color="success"
                         onClick={this.startTimer}
                     >
-                        Start
+                        Start Session
                     </Button>
                 </div>
             );
