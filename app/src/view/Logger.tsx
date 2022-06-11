@@ -1,17 +1,17 @@
 import { Button, ButtonGroup } from "@mui/material";
 import { Component, ReactElement } from "react";
-import SessionList from "./SessionList";
-import Timer from "./Timer";
+import SessionLogs from "../model/SessionLogs";
+import Timer from "../controller/Timer";
 
 type MyState = {
     isLogging: boolean;
 };
 export default class Logger extends Component<{}, MyState> {
-    logs: SessionList;
+    logs: SessionLogs;
 
     constructor(props: any) {
         super(props);
-        this.logs = new SessionList();
+        this.logs = new SessionLogs();
         this.state = { isLogging: false };
         this.startTimer = this.startTimer.bind(this);
         this.endTimer = this.endTimer.bind(this);
@@ -25,7 +25,7 @@ export default class Logger extends Component<{}, MyState> {
     endTimer() {
         this.logs.endSession();
         this.setState({ isLogging: false });
-        console.log(this.logs);
+        localStorage.setItem("timerLogs", JSON.stringify(this.logs));
     }
 
     render() {

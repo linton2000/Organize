@@ -1,6 +1,6 @@
 import Session from "./Session";
 
-export default class SessionList {
+export default class SessionLogs {
     sessions: Array<Session>;
 
     constructor() {
