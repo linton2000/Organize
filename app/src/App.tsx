@@ -8,10 +8,10 @@ function App() {
         <Grid container spacing={20}>
             <Grid item xs={12} />
             <Grid item xs={2} />
-            <Grid container item xs={3}>
+            <Grid container item xs={2}>
                 <Logger />
             </Grid>
-            <Grid container item xs={6}>
+            <Grid container item xs={7}>
                 <LogTable />
             </Grid>
         </Grid>
