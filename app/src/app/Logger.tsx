@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mui/material";
 import { Component, ReactElement } from "react";
 import SessionLogs from "../model/SessionLogs";
-import Timer from "../controller/Timer";
+import Timer from "./Timer";
 import SubjectSelector from "./SubjectSelector";
 
 type MyState = {
