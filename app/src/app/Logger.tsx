@@ -32,6 +32,7 @@ export default class Logger extends Component<{}, MyState> {
 
     render() {
         let res: ReactElement;
+        // User has started the timer
         if (this.state.isLogging) {
             res = (
                 <Stack spacing={3}>
@@ -43,8 +44,38 @@ export default class Logger extends Component<{}, MyState> {
                     >
                         End Session
                     </Button>
+                    <SubjectSelector
+                        subject={this.state.subject}
+                        isDisabled={true}
+                        onSubjectChange={(value) =>
+                            this.setState({ subject: value })
+                        }
+                    />
                 </Stack>
             );
+        // User has selected a subject    
+        } else if (this.state.subject) {
+            res = (
+                <Stack spacing={3}>
+                    <h1>00:00:00</h1>
+                    <Button
+                        variant="outlined"
+                        color="success"
+                        onClick={this.startTimer}
+                        disabled={false}
+                    >
+                        Start Session
+                    </Button>
+                    <SubjectSelector
+                        subject={this.state.subject}
+                        isDisabled={false}
+                        onSubjectChange={(value) =>
+                            this.setState({ subject: value })
+                        }
+                    />
+                </Stack>
+            );
+        // User hasn't selected a subject
         } else {
             res = (
                 <Stack spacing={3}>
@@ -53,11 +84,13 @@ export default class Logger extends Component<{}, MyState> {
                         variant="outlined"
                         color="success"
                         onClick={this.startTimer}
+                        disabled={true}
                     >
                         Start Session
                     </Button>
                     <SubjectSelector
                         subject={this.state.subject}
+                        isDisabled={false}
                         onSubjectChange={(value) =>
                             this.setState({ subject: value })
                         }
