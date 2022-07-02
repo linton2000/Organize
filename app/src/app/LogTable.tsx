@@ -107,7 +107,7 @@ export default function LogTable() {
 
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+            <Table sx={{ minWidth: 500, minHeight: 473 }} aria-label="custom pagination table">
                 <TableHead>
                     <StyledTableRow>
                         <StyledTableCell>Name</StyledTableCell>
