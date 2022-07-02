@@ -1,43 +1,35 @@
-import React, { Component, useState } from "react";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-export default class SubjectSelector extends Component {
-    subject: string | null;
-    selectElement: React.RefObject<any>;
-    
-    constructor(props: {}) {
-        super(props);
-        this.subject = null;
-        this.selectElement = React.createRef();
-    }
+type myProps = {
+    subject: string,
+    onSubjectChange: (value: string) => void
+}
 
-    getSubject() {
-        return this.subject;
-    }
+export default function SubjectSelector(props: myProps) {
 
-    handleChange() {
-        this.subject = this.selectElement.current.value;
-    }
+    const handleChange = (event: SelectChangeEvent) => {
+        props.onSubjectChange(event.target.value)
+    };
 
-    render() {
-        return (
-            <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                    Select Subject
-                </InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="subject_selector"
-                    ref={this.selectElement}
-                    value={this.subject}
-                    onChange={this.handleChange.bind(this)}
-                >
-                    <MenuItem value={"FIT2004"}>FIT2004</MenuItem>
-                    <MenuItem value={"ENG1001"}>ENG1001</MenuItem>
-                    <MenuItem value={"Organize"}>Organize</MenuItem>
-                </Select>
-            </FormControl>
-        );
-    }
+    return (
+        <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">
+                Subject
+            </InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={props.subject}
+                label="subject"
+                onChange={handleChange}
+            >
+                <MenuItem value={"Organize"}>Organize</MenuItem>
+                <MenuItem value={"FIT2004"}>FIT2004</MenuItem>
+                <MenuItem value={"AI Book"}>AI Book</MenuItem>
+            </Select>
+        </FormControl>
+    );
 }
