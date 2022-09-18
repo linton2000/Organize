@@ -1,6 +1,6 @@
 import { Button, Stack } from "@mui/material";
 import { Component, ReactElement } from "react";
-import SessionLog from "./SessionLog";
+import Session from "./Session";
 import Timer from "./Timer";
 import SubjectSelector from "../components/SubjectSelector";
 
@@ -8,12 +8,15 @@ type LoggerState = {
     isLogging: boolean;
     subject: string;
 };
+
+/** This component handles log controlling logic and acts as an interface between
+ * the logger's UI and the business logic classes */
 export default class Logger extends Component<{}, LoggerState> {
-    logs: SessionLog;
+    session: Session | null;
 
     constructor(props: {} | Readonly<{}>) {
         super(props);
-        this.logs = new SessionLog();
+        this.session = null;
         this.state = { isLogging: false, subject: "" };
         this.startTimer = this.startTimer.bind(this);
         this.endTimer = this.endTimer.bind(this);
@@ -21,14 +24,13 @@ export default class Logger extends Component<{}, LoggerState> {
 
     startTimer() {
         if (this.state.subject != "")
-            this.logs.startSession(this.state.subject);
+            this.session = new Session(new Date(), this.state.subject);
         this.setState({ isLogging: true });
     }
 
     endTimer() {
-        this.logs.endSession();
+        if (this.session != null) this.session.end(); // API POST request made here
         this.setState({ isLogging: false });
-        localStorage.settem("timerLogs", JSON.stringify(this.logs));
     }
 
     render() {
