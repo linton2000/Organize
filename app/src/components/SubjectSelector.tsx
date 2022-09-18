@@ -3,13 +3,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-type myProps = {
+type SubSelProps = {
     subject: string,
     onSubjectChange: (value: string) => void,
     isDisabled: boolean
 };
 
-export default function SubjectSelector(props: myProps) {
+export default function SubjectSelector(props: SubSelProps) {
     const handleChange = (event: SelectChangeEvent) => {
         props.onSubjectChange(event.target.value);
     };

@@ -2,13 +2,13 @@ import { Button, Stack } from "@mui/material";
 import { Component, ReactElement } from "react";
 import SessionLog from "./SessionLog";
 import Timer from "./Timer";
-import SubjectSelector from "./SubjectSelector";
+import SubjectSelector from "../components/SubjectSelector";
 
-type MyState = {
+type LoggerState = {
     isLogging: boolean;
     subject: string;
 };
-export default class Logger extends Component<{}, MyState> {
+export default class Logger extends Component<{}, LoggerState> {
     logs: SessionLog;
 
     constructor(props: {} | Readonly<{}>) {
@@ -20,7 +20,8 @@ export default class Logger extends Component<{}, MyState> {
     }
 
     startTimer() {
-        if (this.state.subject != "") this.logs.startSession(this.state.subject);
+        if (this.state.subject != "")
+            this.logs.startSession(this.state.subject);
         this.setState({ isLogging: true });
     }
 
@@ -53,7 +54,7 @@ export default class Logger extends Component<{}, MyState> {
                     />
                 </Stack>
             );
-        // User has selected a subject    
+            // User has selected a subject
         } else if (this.state.subject) {
             res = (
                 <Stack spacing={3}>
@@ -75,7 +76,7 @@ export default class Logger extends Component<{}, MyState> {
                     />
                 </Stack>
             );
-        // User hasn't selected a subject
+            // User hasn't selected a subject
         } else {
             res = (
                 <Stack spacing={3}>

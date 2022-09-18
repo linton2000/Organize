@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { ReactElement } from "react";
 import Logger from "./app/Logger";
-import LogTable from "./app/LogTable";
+import LogTable from "./components/LogTable";
 
 function App() {
     let mainGrid: ReactElement = (
