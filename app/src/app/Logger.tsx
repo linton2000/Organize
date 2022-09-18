@@ -1,6 +1,6 @@
 import { Button, Stack } from "@mui/material";
 import { Component, ReactElement } from "react";
-import SessionLogs from "./SessionLogs";
+import SessionLog from "./SessionLog";
 import Timer from "./Timer";
 import SubjectSelector from "./SubjectSelector";
 
@@ -9,11 +9,11 @@ type MyState = {
     subject: string;
 };
 export default class Logger extends Component<{}, MyState> {
-    logs: SessionLogs;
+    logs: SessionLog;
 
     constructor(props: {} | Readonly<{}>) {
         super(props);
-        this.logs = new SessionLogs();
+        this.logs = new SessionLog();
         this.state = { isLogging: false, subject: "" };
         this.startTimer = this.startTimer.bind(this);
         this.endTimer = this.endTimer.bind(this);

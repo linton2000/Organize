@@ -1,6 +1,10 @@
 import Session from "./Session";
 
-export default class SessionLogs {
+/** Stores a log of sessions to be displayed on the dashboard
+ * @method startSession(subject: string) - Creates a new session
+ * @method endSession() - Ends current session and POSTs it to the API
+ */
+export default class SessionLog {
     sessions: Array<Session>;
 
     constructor() {
