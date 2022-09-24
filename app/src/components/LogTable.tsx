@@ -11,12 +11,17 @@ import Paper from "@mui/material/Paper";
 import TableHead from "@mui/material/TableHead";
 import TablePaginationActions from "./TablePaginationActions";
 
+import { getAllSessions } from "../scripts/api_utils";
+
 interface Row {
     name: string;
     startTime: string;
     duration: string;
     endTime: string;
 }
+
+// TODO: Add row populating code
+getAllSessions()
 
 const rows: Array<Row> = [
     {
