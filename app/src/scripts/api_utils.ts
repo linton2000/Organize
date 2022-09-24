@@ -1,13 +1,18 @@
+import axios from "axios";
 import Session from "../app/Session";
+import { SESSION_URL } from "./constants";
+import { PostSession } from "./post_types";
 
-/** Makes a POST request to the Django API to store session parameter attributes */
-function storeSession(session: Session): void {
-    console.log(
-        `Stored session with attributes:
-        \nStart time = ${session.startTime} 
-        \nEnd time = ${session.endTime} 
-        \nSubject = ${session.subject}`
-    );
+/** Makes a POST request using axios to the Django API to store session parameter attributes */
+async function storeSession(session: Session): Promise<void> {
+    let postSession: PostSession = {
+        startDate: session.startTime,
+        endDate: session.endTime as Date,
+        subject: session.subject,
+    };
+
+    const result = axios.post(SESSION_URL, postSession);
+    console.log(result);
 }
 
 export { storeSession };
