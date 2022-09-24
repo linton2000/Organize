@@ -8,4 +8,4 @@ class Session(models.Model):
     subject = models.CharField(max_length=30)
 
     def __str__(self) -> str:
-        return f"Session ID: {self.sesssionId} \nStart Date: {self.startDate} \nEnd Date: {self.endDate} \nSubject: {self.subject}"
+        return f"Session ID: {self.sessionId} \nStart Date: {self.startDate} \nEnd Date: {self.endDate} \nSubject: {self.subject}"
