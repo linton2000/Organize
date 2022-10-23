@@ -1,11 +1,11 @@
-export interface GetSession {
+export interface GETSession {
     sessionId: number,
     startDate: Date,
     endDate: Date,
     subject: string
 }
 
-export interface PostSession {
+export interface POSTSession {
     startDate: Date;
     endDate: Date;
     subject: string;
