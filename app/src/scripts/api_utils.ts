@@ -23,7 +23,6 @@ async function getAllSessions(): Promise<GETSession[]> {
         .get(SESSION_URL)
         .then((response) => (getArray = response.data));
 
-    console.log(getArray);
     return getArray;
 }
 
