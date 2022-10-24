@@ -3,6 +3,7 @@ import LogTableUI from "./LogTableUI";
 import { getAllSessions } from "../scripts/api_utils";
 import { GETSession } from "../scripts/api_types";
 import { Row } from "./component_types";
+import { formatSessionDate } from "./utils";
 
 interface LogTableState {
     rows: Row[];
@@ -13,9 +14,9 @@ function populateSessionRows(getSessions: GETSession[]): Row[] {
     for (let session of getSessions) {
         rows.push({
             name: session.subject,
-            startTime: session.startDate.toString(),
+            startTime: formatSessionDate(session.startDate),
             duration: "100",
-            endTime: session.endDate.toString(),
+            endTime: formatSessionDate(session.endDate),
         });
     }
     return rows;
