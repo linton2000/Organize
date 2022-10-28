@@ -4,17 +4,22 @@ import Session from "./Session";
 import Timer from "./Timer";
 import SubjectSelector from "../components/SubjectSelector";
 
-type LoggerState = {
+interface LoggerState {
     isLogging: boolean;
     subject: string;
 };
 
+interface LoggerProps {
+    rerender: boolean;
+    setRerender: (arg0: boolean) => void;
+}
+
 /** This component handles log controlling logic and acts as an interface between
  * the logger's UI and the business logic classes */
-export default class Logger extends Component<{}, LoggerState> {
+export default class Logger extends Component<LoggerProps, LoggerState> {
     session: Session | null;
 
-    constructor(props: {} | Readonly<{}>) {
+    constructor(props: LoggerProps) {
         super(props);
         this.session = null;
         this.state = { isLogging: false, subject: "" };
@@ -56,7 +61,7 @@ export default class Logger extends Component<{}, LoggerState> {
                     />
                 </Stack>
             );
-            // User has selected a subject
+        // User has selected a subject
         } else if (this.state.subject) {
             res = (
                 <Stack spacing={3}>
@@ -78,7 +83,7 @@ export default class Logger extends Component<{}, LoggerState> {
                     />
                 </Stack>
             );
-            // User hasn't selected a subject
+        // User hasn't selected a subject
         } else {
             res = (
                 <Stack spacing={3}>

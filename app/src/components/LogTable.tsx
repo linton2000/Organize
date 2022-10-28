@@ -9,6 +9,11 @@ interface LogTableState {
     rows: Row[];
 }
 
+interface LogTableProps {
+    rerender: boolean;
+    setRerender: (arg0: boolean) => void;
+}
+
 function populateSessionRows(getSessions: GETSession[]): Row[] {
     let rows: Row[] = [];
     for (let session of getSessions.reverse()) {
@@ -22,8 +27,8 @@ function populateSessionRows(getSessions: GETSession[]): Row[] {
     return rows;
 }
 
-export default class LogTable extends React.Component<{}, LogTableState> {
-    constructor(props: {}) {
+export default class LogTable extends React.Component<LogTableProps, LogTableState> {
+    constructor(props: LogTableProps) {
         super(props);
         this.state = { rows: [] };
     }
