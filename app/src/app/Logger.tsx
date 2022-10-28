@@ -36,6 +36,7 @@ export default class Logger extends Component<LoggerProps, LoggerState> {
     endTimer() {
         if (this.session != null) this.session.end(); // API POST request made here
         this.setState({ isLogging: false });
+        this.props.setRerender(true);
     }
 
     render() {

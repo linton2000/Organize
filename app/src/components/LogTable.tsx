@@ -14,29 +14,37 @@ interface LogTableProps {
     setRerender: (arg0: boolean) => void;
 }
 
-function populateSessionRows(getSessions: GETSession[]): Row[] {
-    let rows: Row[] = [];
-    for (let session of getSessions.reverse()) {
-        rows.push({
-            name: session.subject,
-            startTime: formatSessionDate(session.startDate),
-            duration: calcDuration(session.startDate, session.endDate),
-            endTime: formatSessionDate(session.endDate),
-        });
-    }
-    return rows;
-}
-
-export default class LogTable extends React.Component<LogTableProps, LogTableState> {
+export default class LogTable extends React.Component<
+    LogTableProps,
+    LogTableState
+> {
     constructor(props: LogTableProps) {
         super(props);
         this.state = { rows: [] };
     }
 
+    populateSessionRows(getSessions: GETSession[]) {
+        let newRows: Row[] = [];
+        for (let session of getSessions.reverse()) {
+            newRows.push({
+                name: session.subject,
+                startTime: formatSessionDate(session.startDate),
+                duration: calcDuration(session.startDate, session.endDate),
+                endTime: formatSessionDate(session.endDate),
+            });
+        }
+        this.setState({ rows: newRows });
+    }
+
     componentDidMount() {
-        getAllSessions()
-            .then((result) => populateSessionRows(result))
-            .then((res) => this.setState({ rows: res }));
+        getAllSessions().then((res) => this.populateSessionRows(res));
+    }
+
+    componentDidUpdate() {
+        if (this.props.rerender == true) {
+            getAllSessions().then((res) => this.populateSessionRows(res));
+            this.props.setRerender(false);
+        }
     }
 
     render() {
