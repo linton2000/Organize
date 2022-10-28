@@ -11,7 +11,7 @@ interface LogTableState {
 
 function populateSessionRows(getSessions: GETSession[]): Row[] {
     let rows: Row[] = [];
-    for (let session of getSessions) {
+    for (let session of getSessions.reverse()) {
         rows.push({
             name: session.subject,
             startTime: formatSessionDate(session.startDate),
