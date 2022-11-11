@@ -6,7 +6,7 @@ import LogTable from "components/LogTable";
 export default function Home(){
     const [rerender, setRerender] = useState<boolean>();
 
-    if (rerender == undefined) {
+    if (rerender === undefined) {
         setRerender(false);
     }
 
