@@ -3,7 +3,7 @@ import { useState, useEffect, ReactElement } from "react";
 import Logger from "app/Logger";
 import LogTable from "components/LogTable";
 
-function Home(){
+export default function Home(){
     const [rerender, setRerender] = useState<boolean>();
 
     if (rerender == undefined) {
@@ -35,5 +35,3 @@ function Home(){
 
     return mainGrid;
 }
-
-export default Home;
