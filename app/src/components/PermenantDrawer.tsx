@@ -15,17 +15,8 @@ interface drawerProps{
 
 const drawerWidth = 240;
 
-export default function ClippedDrawer(props: drawerProps) {
+export default function PermenantDrawer(props: drawerProps) {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Organize
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Drawer
         variant="permanent"
         sx={{
@@ -47,6 +38,5 @@ export default function ClippedDrawer(props: drawerProps) {
           </List>
         </Box>
       </Drawer>
-    </Box>
   );
 }
