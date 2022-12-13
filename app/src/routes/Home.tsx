@@ -25,10 +25,7 @@ export default function Home(){
                 />
             </Grid>
             <Grid container item xs={7}>
-                <LogTable
-                    rerender={rerender as boolean}
-                    setRerender={setRerender}
-                />
+                <LogTable/>
             </Grid>
         </Grid>
     );

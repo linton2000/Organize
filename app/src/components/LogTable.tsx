@@ -9,16 +9,11 @@ interface LogTableState {
     rows: Row[];
 }
 
-interface LogTableProps {
-    rerender: boolean;
-    setRerender: (arg0: boolean) => void;
-}
-
 export default class LogTable extends React.Component<
-    LogTableProps,
+    any,
     LogTableState
 > {
-    constructor(props: LogTableProps) {
+    constructor(props: any) {
         super(props);
         this.state = { rows: [] };
     }
@@ -38,13 +33,6 @@ export default class LogTable extends React.Component<
 
     componentDidMount() {
         getAllSessions().then((res) => this.populateSessionRows(res));
-    }
-
-    componentDidUpdate() {
-        if (this.props.rerender == true) {
-            getAllSessions().then((res) => this.populateSessionRows(res));
-            this.props.setRerender(false);
-        }
     }
 
     render() {
