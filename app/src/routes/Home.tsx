@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import { useState, useEffect, ReactElement } from "react";
 import Logger from "app/Logger";
 import LogTable from "components/LogTable";
@@ -18,14 +18,14 @@ export default function Home(){
         <Grid container spacing={20}>
             <Grid item xs={12} />
             <Grid item xs={1} />
+            <Grid item xs={6}>
+                <Skeleton animation={false} variant={"rounded"} height={400}/>
+            </Grid>
             <Grid container item xs={3}>
                 <Logger
                     rerender={rerender as boolean}
                     setRerender={setRerender}
                 />
-            </Grid>
-            <Grid container item xs={7}>
-                <LogTable/>
             </Grid>
         </Grid>
     );
