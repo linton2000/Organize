@@ -33,7 +33,7 @@ export default function SubjectSelector(props: SubSelProps) {
                 <MenuItem value={"FIT3171"}>FIT3171</MenuItem>
                 <MenuItem value={"FIT2100"}>FIT2100</MenuItem>
                 <MenuItem value={"ENG1005"}>ENG1005</MenuItem>
-                <MenuItem value={"AI Book"}>AI Book</MenuItem>
+                <MenuItem value={"Coursera ML"}>Coursera ML</MenuItem>
             </Select>
         </FormControl>
     );
