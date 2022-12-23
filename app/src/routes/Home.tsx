@@ -31,3 +31,15 @@ export default function Home(){
 
     return mainGrid;
 }
+
+/**
+ * Session strength attribute:
+ * Colour would appear both in the timer (with some motivation text) and 
+ * in the home calendar.
+ *  - 0-2 mins: not counted
+ *  - 2-10 mins: 1 (red)
+ *  - 10-30 mins: 2 (yellow)
+ *  - 30-60 mins: 3 (blue)
+ *  - 60-90 mins: 4 (green)
+ *  - 90+ mins: 5 (purple)
+ */
