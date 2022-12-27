@@ -1,4 +1,4 @@
-import { Grid, Skeleton } from "@mui/material";
+import { Grid, Skeleton, Paper } from "@mui/material";
 import { useState, useEffect, ReactElement } from "react";
 import Logger from "app/Logger";
 
@@ -21,10 +21,12 @@ export default function Home(){
                 <Skeleton animation={false} variant={"rounded"} height={400}/>
             </Grid>
             <Grid container item xs={3}>
+                <Paper elevation={10} sx={{padding: 5, marginTop: 5}}>
                 <Logger
                     rerender={rerender as boolean}
                     setRerender={setRerender}
                 />
+                </Paper>
             </Grid>
         </Grid>
     );
