@@ -17,6 +17,8 @@ export default class Session {
 
     end() {
         this.endTime = new Date();
-        storeSession(this);
+        // Only store session if elapsed time > 3 mins
+        if(this.endTime.getTime() - this.startTime.getTime() > (1000*60*3)) 
+            storeSession(this);
     }
 }
