@@ -7,7 +7,7 @@ import SubjectSelector from "../components/SubjectSelector";
 interface LoggerState {
     isLogging: boolean;
     subject: string;
-};
+}
 
 interface LoggerProps {
     rerender: boolean;
@@ -62,11 +62,16 @@ export default class Logger extends Component<LoggerProps, LoggerState> {
                     />
                 </Stack>
             );
-        // User has selected a subject
+            // User has selected a subject
         } else if (this.state.subject) {
             res = (
                 <Stack spacing={3}>
-                    <h1>00:00:00</h1>
+                    <Stack spacing={1}>
+                        <h1 style={{ fontFamily: "monospace" }}>00:00:00</h1>
+                        <p style={{ fontFamily: "Georgia, serif" }}>
+                            No better time than the present...
+                        </p>
+                    </Stack>
                     <Button
                         variant="outlined"
                         color="success"
@@ -84,11 +89,16 @@ export default class Logger extends Component<LoggerProps, LoggerState> {
                     />
                 </Stack>
             );
-        // User hasn't selected a subject
+            // User hasn't selected a subject
         } else {
             res = (
                 <Stack spacing={3}>
-                    <h1>00:00:00</h1>
+                    <Stack spacing={1}>
+                        <h1 style={{ fontFamily: "monospace" }}>00:00:00</h1>
+                        <p style={{ fontFamily: "Georgia, serif" }}>
+                            No better time than the present...
+                        </p>
+                    </Stack>
                     <Button
                         variant="outlined"
                         color="success"
