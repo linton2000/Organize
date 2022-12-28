@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
-import { brown, red, orange, teal, green, purple } from "@mui/material/colors";
+import { red, orange, yellow, teal, green, purple } from "@mui/material/colors";
 
 interface ColorCaption {
     color: string,
@@ -22,14 +22,14 @@ export default function Timer(props: { startTime: Date }) {
 
     // Time styling (6 different styles)
     let styles: Array<ColorCaption> = [
-        {color: brown[700], caption: "Don't change your mind now..."},
-        {color: red[700], caption: "Great start! Now keep going..."},
-        {color: orange[700], caption: "You're almost there. Just a little more..."},
+        {color: red[700], caption: "Don't change your mind now..."},
+        {color: orange[700], caption: "Great start! Now keep going..."},
+        {color: yellow[700], caption: "You're almost there. Just a little more..."},
         {color: teal[700], caption: "Nice! You're over the mid-way hump..."},
         {color: green[700], caption: "Good job! Another session done :)"},
         {color: purple[700], caption: "Better take a rest now haha :P"},
     ];
-    let i: number = 5;
+    let i: number = 0;
 
     // Style logic for each session stage
     if(mins >= 3 && mins < 10){
