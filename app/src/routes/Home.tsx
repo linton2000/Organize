@@ -1,6 +1,8 @@
-import { Grid, Skeleton, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { useState, useEffect, ReactElement } from "react";
+
 import Logger from "app/Logger";
+import HomeCalendar from "app/HomeCalendar";
 
 export default function Home(){
     const [rerender, setRerender] = useState<boolean>();
@@ -18,7 +20,7 @@ export default function Home(){
             <Grid item xs={12} />
             <Grid item xs={1} />
             <Grid item xs={6}>
-                <Skeleton animation={false} variant={"rounded"} height={400}/>
+                <HomeCalendar/>
             </Grid>
             <Grid container item xs={3}>
                 <Paper elevation={10} sx={{padding: 5, marginTop: 5}}>
@@ -33,15 +35,3 @@ export default function Home(){
 
     return mainGrid;
 }
-
-/**
- * Session strength attribute:
- * Colour would appear both in the timer (with some motivation text) and 
- * in the home calendar.
- *  - 0-2 mins: not counted
- *  - 2-10 mins: 1 (red)
- *  - 10-30 mins: 2 (yellow)
- *  - 30-60 mins: 3 (blue)
- *  - 60-90 mins: 4 (green)
- *  - 90+ mins: 5 (purple)
- */
