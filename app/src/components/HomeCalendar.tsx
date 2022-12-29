@@ -1,28 +1,62 @@
+import * as React from "react";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { Event, GETSession } from "scripts/types";
+import { getAllSessions } from "scripts/api_methods";
 
-// Setup the localizer by providing the moment (or globalize, or Luxon) Object
-// to the correct localizer.
-const localizer = momentLocalizer(moment); // or globalizeLocalizer
+interface CalendarProps {
+    rerender: boolean;
+    setRerender: (arg0: boolean) => void;
+}
 
-export default function HomeCalendar() {
+interface CalendarState {
+    events: Event[]
+}
 
-    let minTime = new Date(1972, 0, 1, 8)
-    let maxTime = new Date(1972, 0, 1, 22)
-    let views: View[] = ['week', 'day']
+export default class HomeCalendar extends React.Component<
+    CalendarProps,
+    CalendarState
+> {
+    constructor(props: CalendarProps) {
+        super(props);
+        this.state = {events: []}
+    }
 
-    return (
-        <div className="myCustomHeight">
-            <Calendar
-                localizer={localizer}
-                startAccessor="start"
-                endAccessor="end"
-                defaultView="week"
-                min={minTime}
-                max={maxTime}
-                views={views}
-            />
-        </div>
-    );
+    populateEvents(getSessions: GETSession[]) {
+        let newEvents: Event[] = [];
+        for (let session of getSessions) {
+            newEvents.push({
+                title: session.subject,
+                start: new Date(session.startDate),
+                end: new Date(session.endDate)
+            })
+        }
+        this.setState({events: newEvents})
+    }
+
+    componentWillMount() {
+        getAllSessions().then((res) => this.populateEvents(res));
+    }
+
+    render() {
+        let minTime = new Date(1972, 0, 1, 8);
+        let maxTime = new Date(1972, 0, 1, 22);
+        let views: View[] = ["week", "day"];
+
+        return (
+            <div className="myCustomHeight">
+                <Calendar
+                    localizer={momentLocalizer(moment)}
+                    startAccessor="start"
+                    endAccessor="end"
+                    defaultView="week"
+                    min={minTime}
+                    max={maxTime}
+                    views={views}
+                    events={this.state.events}
+                />
+            </div>
+        );
+    }
 }
