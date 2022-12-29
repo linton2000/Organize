@@ -1,8 +1,8 @@
 import { Grid, Paper } from "@mui/material";
 import { useState, useEffect, ReactElement } from "react";
 
-import Logger from "app/Logger";
-import HomeCalendar from "app/HomeCalendar";
+import Logger from "components/Logger/Logger";
+import HomeCalendar from "components/HomeCalendar";
 
 export default function Home() {
     const [rerender, setRerender] = useState<boolean>();

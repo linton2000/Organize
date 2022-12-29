@@ -1,5 +1,5 @@
 import axios from "axios";
-import Session from "../app/Session";
+import Session from "../domain/Session";
 import { SESSION_URL } from "./constants";
 import { POSTSession, GETSession } from "./api_types";
 

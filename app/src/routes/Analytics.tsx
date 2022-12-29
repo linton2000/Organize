@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { ReactElement } from "react";
-import LogTable from "components/LogTable";
+import LogTable from "components/LogTable/LogTable";
 
 export default function Analytics() {
     let mainGrid: ReactElement = (

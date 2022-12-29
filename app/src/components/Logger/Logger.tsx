@@ -1,8 +1,8 @@
 import { Button, Stack } from "@mui/material";
 import { Component, ReactElement } from "react";
-import Session from "./Session";
+import Session from "../../domain/Session";
 import Timer from "./Timer";
-import SubjectSelector from "../components/SubjectSelector";
+import SubjectSelector from "./SubjectSelector";
 
 interface LoggerState {
     isLogging: boolean;
