@@ -29,6 +29,7 @@ export default function Layout() {
             </AppBar>
             <DefaultDrawer navItems={navItemsList} />
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <Toolbar> </Toolbar>
                 <Outlet />
             </Box>
         </Box>
