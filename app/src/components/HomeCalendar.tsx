@@ -18,9 +18,13 @@ export default class HomeCalendar extends React.Component<
     CalendarProps,
     CalendarState
 > {
+    formats: object;
     constructor(props: CalendarProps) {
         super(props);
         this.state = {events: []}
+        this.formats = {
+            eventTimeRangeFormat: () => {""}
+        }
     }
 
     populateEvents(getSessions: GETSession[]) {
@@ -55,6 +59,7 @@ export default class HomeCalendar extends React.Component<
                     max={maxTime}
                     views={views}
                     events={this.state.events}
+                    formats={this.formats}
                 />
             </div>
         );
