@@ -1,8 +1,8 @@
 import * as React from "react";
 import LogTableUI from "./LogTableUI";
-import { getAllSessions } from "scripts/api_utils";
-import { GETSession } from "scripts/api_types";
-import { Row } from "scripts/constants";
+import { getAllSessions } from "scripts/api_methods";
+import { GETSession } from "scripts/types";
+import { Row } from "scripts/types";
 import { formatSessionDate, calcDuration } from "scripts/utils";
 
 interface LogTableState {

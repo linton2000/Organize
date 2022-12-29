@@ -1,7 +1,7 @@
 import axios from "axios";
 import Session from "../domain/Session";
 import { SESSION_URL } from "./constants";
-import { POSTSession, GETSession } from "./api_types";
+import { POSTSession, GETSession } from "./types";
 
 /** Makes a POST request using axios to the Django API to store session parameter attributes */
 async function storeSession(session: Session): Promise<void> {
@@ -23,6 +23,7 @@ async function getAllSessions(): Promise<GETSession[]> {
         .get(SESSION_URL)
         .then((response) => (getArray = response.data));
 
+    console.log(result);
     return getArray;
 }
 

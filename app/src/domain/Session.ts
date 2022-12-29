@@ -1,4 +1,4 @@
-import { storeSession } from "../scripts/api_utils";
+import { storeSession } from "../scripts/api_methods";
 
 /** Each productivity session is stored as an instance of this class. This class also calls
  * an API post request function at end of session.
