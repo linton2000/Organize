@@ -17,16 +17,17 @@ export default function Home() {
     });
 
     let mainGrid: ReactElement = (
-        <Grid container spacing={10} columns={20}>
+        <Grid container spacing={0} columns={28}>
             <Grid item xs={1} />
-            <Grid item xs={12}>
+            <Grid item xs={16}>
                 <HomeCalendar
                     rerender={rerender as boolean}
                     setRerender={setRerender}
                 />
             </Grid>
-            <Grid item>
-                <Grid item maxHeight={375} xs={14}>
+            <Grid item xs={2} />
+            <Grid item xs={8}>
+                <Grid item maxHeight={375} xs={20}>
                     <Paper elevation={10} sx={{ padding: 5, marginTop: 5 }}>
                         <Logger
                             rerender={rerender as boolean}
@@ -34,8 +35,7 @@ export default function Home() {
                         />
                     </Paper>
                 </Grid>
-                <Grid item xs={6} />
-                <Grid item xs={18}>
+                <Grid item xs={28}>
                     <QuickSummary />
                 </Grid>
             </Grid>
