@@ -43,6 +43,13 @@ export default class HomeCalendar extends React.Component<
         getAllSessions().then((res) => this.populateEvents(res));
     }
 
+    componentDidUpdate() {
+        if (this.props.rerender == true) {
+            getAllSessions().then((res) => this.populateEvents(res));
+            this.props.setRerender(false);
+        }
+    }
+
     render() {
         let minTime = new Date(1972, 0, 1, 8);
         let maxTime = new Date(1972, 0, 1, 22);
