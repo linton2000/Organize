@@ -14,6 +14,8 @@ export default function SubjectSelector(props: SubSelProps) {
         props.onSubjectChange(event.target.value);
     };
 
+    const subjects = ["Organize", "FIT3173", "FIT5202", "FIT3171", "Coursera ML"];
+
     return (
         <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Subject</InputLabel>
@@ -28,11 +30,9 @@ export default function SubjectSelector(props: SubSelProps) {
                 <MenuItem value="">
                     <em>None</em>
                 </MenuItem>
-                <MenuItem value={"Organize"}>Organize</MenuItem>
-                <MenuItem value={"FIT2004"}>FIT3173</MenuItem>
-                <MenuItem value={"FIT2004"}>FIT5202</MenuItem>
-                <MenuItem value={"FIT3171"}>FIT3171</MenuItem>
-                <MenuItem value={"Coursera ML"}>Coursera ML</MenuItem>
+                {subjects.map((subject) => (
+                    <MenuItem value={subject}>{subject}</MenuItem>
+                ))}
             </Select>
         </FormControl>
     );
