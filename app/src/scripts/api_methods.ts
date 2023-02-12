@@ -1,6 +1,6 @@
 import axios from "axios";
 import Session from "../domain/Session";
-import { SESSION_URL } from "./constants";
+import { SESSION_URL, SUMMARY_URL } from "./constants";
 import { POSTSession, GETSession } from "./types";
 
 /** Makes a POST request using axios to the Django API to store session parameter attributes */
@@ -27,4 +27,13 @@ async function getAllSessions(): Promise<GETSession[]> {
     return getArray;
 }
 
-export { storeSession, getAllSessions };
+async function getSummary(): Promise<string> {
+	let testStr: string = '';
+
+	const result = await axios
+		.get(SUMMARY_URL)	
+		.then((response) => (testStr = response.data));
+		
+	return testStr
+}
+export { storeSession, getAllSessions, getSummary };

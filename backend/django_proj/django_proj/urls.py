@@ -20,4 +20,5 @@ from rest_api import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/session/$', views.sessions),
+	path('api/summary/', views.summary)
 ]
