@@ -7,6 +7,7 @@ from rest_framework import status
 
 from .models import Session
 from .serializers import *
+from .summary import computeSummary
 
 # Create your views here.
 @api_view(['GET', 'POST'])
@@ -25,4 +26,5 @@ def sessions(request: HttpRequest):
 
 @api_view(['GET'])
 def summary(request: HttpRequest):
-	return Response('It works!')
+	return Response(computeSummary())
+
