@@ -1,9 +1,9 @@
 import { Grid, Paper } from "@mui/material";
 import { useState, useEffect, ReactElement } from "react";
 
-import Logger from "components/Logger/Logger";
+import Logger from "components/logger/Logger";
 import HomeCalendar from "components/HomeCalendar";
-import QuickSummary from "components/QuickSummary";
+import QuickSummary from "components/summary/QuickSummary";
 
 export default function Home() {
     const [rerender, setRerender] = useState<boolean>();
