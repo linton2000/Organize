@@ -11,6 +11,10 @@ export interface POSTSession {
     subject: string;
 }
 
+export interface GETSummary {
+	lastWorked: number;
+}
+
 export interface Row {
     name: string;
     startTime: string;
@@ -24,4 +28,11 @@ export interface Event {
     end: Date,
     allDay?: boolean,
     resource?: any,
+}
+
+export interface Interval {
+	days: number;
+	hrs: number;
+	mins: number;
+	secs: number;
 }
