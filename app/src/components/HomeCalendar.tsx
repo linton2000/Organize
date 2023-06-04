@@ -62,11 +62,10 @@ export default class HomeCalendar extends React.Component<
                     startAccessor="start"
                     endAccessor="end"
                     defaultView="week"
-                    min={minTime}
-                    max={maxTime}
                     views={views}
                     events={this.state.events}
                     formats={this.formats}
+                    step={60}
                 />
             </div>
         );
