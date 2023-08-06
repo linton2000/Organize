@@ -14,7 +14,7 @@ export default function SubjectSelector(props: SubSelProps) {
         props.onSubjectChange(event.target.value);
     };
 
-    const subjects = ["Coursera ML", "DeepNeuron", "FIT4701", "Azure"];
+    const subjects = ["Coursera ML", "DeepNeuron", "FIT4701", "IBL"];
 
     return (
         <FormControl fullWidth>
