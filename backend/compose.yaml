@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+  mybackend:
+    container_name: api-cntr
+    build:
+      context: .
+      dockerfile: Containerfile
+      target: arm64
+    ports:
+      - 8000:8000
