@@ -1,0 +1,50 @@
+# Compose file for local testing purposes
+services:
+  # Postgres DB service
+  db:
+    container_name: db-cntr
+    restart: always
+    build:
+      context: ./database
+      dockerfile: Containerfile
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_DATABASE={POSTGRESQL_DATABASE}
+      - POSTGRESQL_USER={POSTGRESQL_USER}
+      - POSTGRESQL_PASSWORD={POSTGRESQL_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U db_admin -d django_db"]  # Periodic health checks for django app
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  # Django API service
+  api:
+    container_name: api-cntr
+    restart: always
+    build:
+      context: ./src
+      dockerfile: Containerfile
+    volumes:
+      - ./src:/src
+    ports:
+      - 8000:8000
+    environment:
+      - GRAPHICS_BASE_URL=${GRAPHICS_BASE_URL}
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - POSTGRESQL_DATABASE={POSTGRESQL_DATABASE}
+      - POSTGRESQL_USER={POSTGRESQL_USER}
+      - POSTGRESQL_PASSWORD={POSTGRESQL_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    post_start:
+      - command: sh poststart.sh
+      
+volumes:
+  postgres_data:
