@@ -1,1 +1,64 @@
 .env
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+*.env
+*.venv
+
+# Logs and debug files
+*.log
+logs/
+debug.log
+
+# Ignore migrations compiled files
+**/migrations/*.pyc
+**/migrations/__pycache__/
+
+# Secrets & Configuration
+.env
+.env.local
+.env.production
+.env.testing
+.env.example
+
+# VSCode settings
+.vscode/
+
+# PyCharm
+.idea/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Cache files
+*.cache
+*.mo
+*.swp
+*.swo
+*.DS_Store
+
+# Compiled C extensions
+*.so
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+.cache
+
+# pip, mypy, and pytest files
+pip-log.txt
+pip-delete-this-directory.txt
+mypy_cache/
+.pytest_cache/
+
+# Celery
+celerybeat-schedule
+
+# Heroku
+/.heroku/
