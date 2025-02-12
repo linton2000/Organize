@@ -7,7 +7,7 @@ COPY ./requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Copying djnago api src (need to look at hot reloading & separating sqlite into a volume)
-COPY ./django_proj ./django_proj
+COPY ./src ./src
 
 # Serving REST API on localhost:8000
 EXPOSE 8000
