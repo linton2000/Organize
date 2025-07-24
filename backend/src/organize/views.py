@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
-from serializers import *
-from models import *
+from .serializers import SessionSerializer
+from .models import Session
 
 
 class SessionViewSet(ModelViewSet):
