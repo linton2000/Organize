@@ -12,4 +12,7 @@ class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
         fields = '__all__'
-        
+
+class SummarySerializer(serializers.Serializer):
+    lastWorked = serializers.IntegerField(allow_null=True)
+    
