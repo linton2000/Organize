@@ -1,9 +1,10 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views import SessionViewSet
+from .views import SessionViewSet, SubjectViewSet
 
 router = DefaultRouter()
 router.register(r'sessions', SessionViewSet)
+router.register(r'subjectss', SubjectViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
