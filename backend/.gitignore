@@ -62,3 +62,6 @@ celerybeat-schedule
 
 # Heroku
 /.heroku/
+
+# Remove db from GIT
+src/db.sqlite3
