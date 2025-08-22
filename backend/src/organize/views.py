@@ -33,6 +33,6 @@ class SummaryView(APIView):
                 dt = timezone.make_aware(dt)
             ts = int(dt.timestamp())
 
-        data = {"last_worked": ts}
+        data = {"lastWorked": ts}
         return Response(SummarySerializer(data).data)
     
