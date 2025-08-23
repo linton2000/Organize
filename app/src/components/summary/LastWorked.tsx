@@ -21,9 +21,22 @@ export default function LastWorked(props: { lwDate: Date }){
 		lastWorkedStr = `${dayStr}, ${hrStr} & ${minStr} ago`;
 	}
 
+	// Color logic for last worked time (pleasant colours for more recent work)
+	let colours: Array<string> = [purple[700], green[700], yellow[900], orange[900], red[700]];
+	let i: number = 0;
+    if(mins >= 5 && mins < 15){
+        i = 1;
+    } else if(mins >= 15 && mins < 30){
+        i = 2;
+    } else if(mins >= 30 && mins < 60){
+        i = 3
+    } else if(mins >= 60){
+        i = 4
+    }
+
     return (
 		<p style={{fontFamily: "Georgia, serif" }}>
-			Last Worked: <span style={{ color: red[700]}}>{lastWorkedStr}</span>
+			Last Worked: <span style={{ color: colours[3]}}>{lastWorkedStr}</span>
 		</p>
     );
 }

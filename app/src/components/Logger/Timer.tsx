@@ -23,8 +23,8 @@ export default function Timer(props: { startTime: Date }) {
     // Time styling (6 different styles)
     let styles: Array<ColorCaption> = [
         {color: red[700], caption: "Don't change your mind now..."},
-        {color: orange[700], caption: "Great start! Now keep going..."},
-        {color: yellow[700], caption: "You're almost there. Just a little more..."},
+        {color: orange[900], caption: "Great start! Now keep going..."},
+        {color: yellow[900], caption: "You're almost there. Just a little more..."},
         {color: teal[700], caption: "Nice! You're over the mid-way hump..."},
         {color: green[700], caption: "Good job! Another session done :)"},
         {color: purple[700], caption: "Better take a rest now haha :P"},
