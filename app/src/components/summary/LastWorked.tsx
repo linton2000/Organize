@@ -36,7 +36,7 @@ export default function LastWorked(props: { lwDate: Date }){
 
     return (
 		<p style={{fontFamily: "Georgia, serif" }}>
-			Last Worked: <span style={{ color: colours[3]}}>{lastWorkedStr}</span>
+			Last Worked: <span style={{ color: colours[i]}}>{lastWorkedStr}</span>
 		</p>
     );
 }
