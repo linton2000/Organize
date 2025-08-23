@@ -10,7 +10,7 @@ class Subject(models.Model):
 
 class Session(models.Model):
     sessionId = models.BigAutoField(primary_key=True)
-    startDate = models.DateTimeField(auto_now_add=True)
+    startDate = models.DateTimeField()
     endDate = models.DateTimeField()
     subject = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
 
