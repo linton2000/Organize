@@ -24,13 +24,13 @@ export default function LastWorked(props: { lwDate: Date }){
 	// Color logic for last worked time (pleasant colours for more recent work)
 	let colours: Array<string> = [purple[700], green[700], yellow[900], orange[900], red[700]];
 	let i: number = 0;
-    if(mins >= 5 && mins < 15){
+    if(mins >= 5 && mins < 15 && hrs == 0){
         i = 1;
-    } else if(mins >= 15 && mins < 30){
+    } else if(mins >= 15 && mins < 30 && hrs == 0){
         i = 2;
-    } else if(mins >= 30 && mins < 60){
+    } else if(mins >= 30 && hrs == 0 && hrs == 0){
         i = 3
-    } else if(mins >= 60){
+    } else if(hrs >= 1){
         i = 4
     }
 
