@@ -1,5 +1,6 @@
-from django.db import models
 from datetime import timedelta
+from django.db import models
+from django.utils.html import format_html
 
 
 class Subject(models.Model):
@@ -8,19 +9,35 @@ class Subject(models.Model):
     def __str__(self):
         return f"Subject: {self.name}"
     
+    @property
+    def session_count(self):
+        return models.Count('sessions')
+    
+    @property
+    def latest_session(self):
+        return models.Max("sessions__endDate")
+    
 
 class Session(models.Model):
     sessionId = models.BigAutoField(primary_key=True)
     startDate = models.DateTimeField()
     endDate = models.DateTimeField()
-    subject = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    subject = models.ForeignKey(
+        Subject, 
+        on_delete=models.DO_NOTHING, 
+        related_name='sessions')
 
-    def __str__(self) -> str:
-        return (
-            f"Session ID: {self.sessionId}, "
-            f"Start: {self.startDate.strftime('%b %d, %Y %I:%M %p')}, " 
-            f"Duration: {self.duration_mins} mins, " 
-            f"Subject: {self.subject.name}"
+    def __str__(self):
+        return f"Session ID: {self.sessionId}"
+
+    def admin_summary(self):
+        return format_html(
+            "<b>Start:</b> {} &nbsp; "
+            "<b>Duration:</b> {} mins &nbsp; "
+            "<b>Subject:</b> {}",
+            self.startDate.strftime('%b %d, %Y %I:%M %p'),
+            self.duration_mins if self.duration_mins is not None else '-',
+            self.subject_id
         )
 
     @property
@@ -34,5 +51,5 @@ class Session(models.Model):
     def duration_mins(self) -> int:
         """Duration in whole minutes (int)."""
         dur = self.duration
-        return int(dur.total_seconds() // 60) if dur else None
+        return max(0, int(dur.total_seconds() // 60)) if dur else None  # Using max() to guard against negative vals
     
