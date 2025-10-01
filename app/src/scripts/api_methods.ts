@@ -3,7 +3,7 @@ import Session from "../domain/Session";
 import { SESSION_URL, SUMMARY_URL } from "./constants";
 import { SessionStart, GETSession, GETSummary } from "./types";
 
-/** Creates a Session when user starts timer.  */
+/** Posts a partial Session when user starts timer.  */
 async function startSession(session: Session): Promise<void> {
     let postSession: SessionStart = {
         startDate: session.startTime,
@@ -14,7 +14,7 @@ async function startSession(session: Session): Promise<void> {
     console.log(result);
 }
 
-/** Makes a GET request using axios to Django API and returns an array of all stored Sessions */
+/** Retrieves all session data. Used in LogTable (Analytics page). */
 async function getAllSessions(): Promise<GETSession[]> {
     let getArray: Array<GETSession> = [];
 
@@ -26,6 +26,7 @@ async function getAllSessions(): Promise<GETSession[]> {
     return getArray;
 }
 
+/** Retrieves basic stats for the home page (e.g. last worked time) */
 async function getSummary(): Promise<GETSummary> {
 	let summary: GETSummary = { lastWorked: 0};
 
