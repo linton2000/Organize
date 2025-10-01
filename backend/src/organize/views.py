@@ -1,7 +1,9 @@
 from django.utils import timezone
+from django.db import transaction
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
 from .serializers import SessionSerializer, SubjectSerializer, SummarySerializer
 from .models import Session, Subject
@@ -35,4 +37,29 @@ class SummaryView(APIView):
 
         data = {"lastWorked": ts}
         return Response(SummarySerializer(data).data)
+
+
+class EndSessionView(APIView):
+    """Close the most recent session that is still running."""
+
+    def post(self, request):
+        with transaction.atomic():
+            session = (
+                Session.objects.select_for_update()
+                .filter(endDate__isnull=True)
+                .order_by('-startDate', '-sessionId')
+                .first()
+            )
+
+            if session is None:
+                return Response(
+                    {"detail": "No active session found."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+            session.endDate = timezone.now()
+            session.save(update_fields=["endDate"])
+
+        serializer = SessionSerializer(session)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
