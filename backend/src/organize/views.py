@@ -62,4 +62,24 @@ class EndSessionView(APIView):
 
         serializer = SessionSerializer(session)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ActiveSessionView(APIView):
+    """Return details of the most recent session that is still running."""
+
+    def get(self, request):
+        session = (
+            Session.objects.filter(endDate__isnull=True)
+            .order_by('-startDate', '-sessionId')
+            .first()
+        )
+
+        if session is None:
+            return Response(
+                {"detail": "No active session found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = SessionSerializer(session)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
