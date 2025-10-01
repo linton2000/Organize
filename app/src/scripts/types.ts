@@ -5,9 +5,8 @@ export interface GETSession {
     subject: string
 }
 
-export interface POSTSession {
+export interface SessionStart {
     startDate: Date;
-    endDate: Date;
     subject: string;
 }
 

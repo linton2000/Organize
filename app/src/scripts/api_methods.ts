@@ -1,18 +1,17 @@
 import axios from "axios";
 import Session from "../domain/Session";
 import { SESSION_URL, SUMMARY_URL } from "./constants";
-import { POSTSession, GETSession, GETSummary } from "./types";
+import { SessionStart, GETSession, GETSummary } from "./types";
 
-/** Makes a POST request using axios to the Django API to store session parameter attributes */
-async function storeSession(session: Session): Promise<void> {
-    let postSession: POSTSession = {
+/** Creates a Session when user starts timer.  */
+async function startSession(session: Session): Promise<void> {
+    let postSession: SessionStart = {
         startDate: session.startTime,
-        endDate: session.endTime as Date,
         subject: session.subject,
     };
 
     const result = axios.post(SESSION_URL, postSession);
-    //console.log(result);
+    console.log(result);
 }
 
 /** Makes a GET request using axios to Django API and returns an array of all stored Sessions */
@@ -23,7 +22,7 @@ async function getAllSessions(): Promise<GETSession[]> {
         .get(SESSION_URL)
         .then((response) => (getArray = response.data));
 
-    //console.log(result);
+    console.log(result);
     return getArray;
 }
 
@@ -34,7 +33,7 @@ async function getSummary(): Promise<GETSummary> {
 		.get(SUMMARY_URL)	
 		.then((response) => (summary = response.data));
 	
-	//console.log(result);		
+	console.log(result);		
 	return summary;
 }
-export { storeSession, getAllSessions, getSummary };
+export { startSession, getAllSessions, getSummary };
