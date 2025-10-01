@@ -28,9 +28,10 @@ export default class Logger extends Component<LoggerProps, LoggerState> {
     }
 
     startTimer() {
-        if (this.state.subject != "")
+        if (this.state.subject != "") {
             this.session = new Session(new Date(), this.state.subject);
-        this.setState({ isLogging: true });
+            this.setState({ isLogging: true });
+        }
     }
 
     endTimer() {
@@ -41,7 +42,7 @@ export default class Logger extends Component<LoggerProps, LoggerState> {
 
     render() {
         let res: ReactElement;
-        // User has started the timer
+        // User has selected a subject & started the timer
         if (this.state.isLogging) {
             res = (
                 <Stack spacing={3}>
@@ -62,7 +63,7 @@ export default class Logger extends Component<LoggerProps, LoggerState> {
                     />
                 </Stack>
             );
-            // User has selected a subject
+        // User has selected a subject but hasn't started the timer
         } else if (this.state.subject) {
             res = (
                 <Stack spacing={3}>
@@ -89,7 +90,7 @@ export default class Logger extends Component<LoggerProps, LoggerState> {
                     />
                 </Stack>
             );
-            // User hasn't selected a subject
+        // User hasn't selected a subject & hasn't started the timer
         } else {
             res = (
                 <Stack spacing={3}>
