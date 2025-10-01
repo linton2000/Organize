@@ -21,7 +21,7 @@ class Subject(models.Model):
 class Session(models.Model):
     sessionId = models.BigAutoField(primary_key=True)
     startDate = models.DateTimeField()
-    endDate = models.DateTimeField()
+    endDate = models.DateTimeField(null=True)
     subject = models.ForeignKey(
         Subject, 
         on_delete=models.DO_NOTHING, 
@@ -52,4 +52,3 @@ class Session(models.Model):
         """Duration in whole minutes (int)."""
         dur = self.duration
         return max(0, int(dur.total_seconds() // 60)) if dur else None  # Using max() to guard against negative vals
-    
