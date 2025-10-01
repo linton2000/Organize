@@ -39,6 +39,44 @@ class SummaryView(APIView):
         return Response(SummarySerializer(data).data)
 
 
+class StartSessionView(APIView):
+    """Create a new session with the current server time as startDate."""
+
+    def post(self, request):
+        subject_name = request.data.get("subject")
+
+        if not subject_name:
+            return Response(
+                {"detail": "Field 'subject' is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Might need to update this when implementing subject management 
+        subject, _ = Subject.objects.get_or_create(pk=subject_name)
+
+        with transaction.atomic():
+            active_session = (
+                Session.objects.select_for_update()
+                .filter(endDate__isnull=True)
+                .order_by('-startDate', '-sessionId')
+                .first()
+            )
+
+            if active_session is not None:
+                return Response(
+                    {"detail": "An active session already exists."},
+                    status=status.HTTP_409_CONFLICT,
+                )
+
+            session = Session.objects.create(
+                subject=subject,
+                startDate=timezone.now(),
+            )
+
+        serializer = SessionSerializer(session)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
 class EndSessionView(APIView):
     """Close the most recent session that is still running."""
 
