@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SESSION_URL, SUMMARY_URL } from "./constants";
+import { ACTIVE_SESSION_URL, END_SESSION_URL, SESSION_URL, SUMMARY_URL } from "./constants";
 import { Session, Summary } from "./types";
 
 type RequestMethod = "get" | "post";
@@ -42,6 +42,17 @@ async function startSession(subject: string): Promise<Session> {
 	});
 }
 
+/** Retrieves the active (most recent with null endDate) Session. 
+ * Used to persist Timer across browser refreshes. */
+async function getActiveSession(): Promise<Session> {
+    return apiRequest<Session>({ url: ACTIVE_SESSION_URL});
+}
+
+/** Ends the currently active Session. */
+async function endSession(): Promise<Session> {
+    return apiRequest<Session>({ url: END_SESSION_URL});
+}
+
 /** Retrieves all session data. Used in LogTable (Analytics page). */
 async function getAllSessions(): Promise<Session[]> {
 	return apiRequest<Session[]>({ url: SESSION_URL });
@@ -51,4 +62,5 @@ async function getAllSessions(): Promise<Session[]> {
 async function getSummary(): Promise<Summary> {
 	return apiRequest<Summary>({ url: SUMMARY_URL });
 }
-export { startSession, getAllSessions, getSummary };
+
+export { startSession, getAllSessions, getSummary, getActiveSession, endSession };
