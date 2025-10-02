@@ -1,16 +1,11 @@
-export interface GETSession {
+export interface Session {
     sessionId: number,
-    startDate: Date,
-    endDate: Date,
+    startDate: string,
+    endDate: string,
     subject: string
 }
 
-export interface SessionStart {
-    startDate: Date;
-    subject: string;
-}
-
-export interface GETSummary {
+export interface Summary {
 	lastWorked: number;
 }
 
