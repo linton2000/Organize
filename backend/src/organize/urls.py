@@ -10,8 +10,8 @@ from .views import (
 )
 
 router = DefaultRouter()
-router.register(r'sessions', SessionViewSet)
-router.register(r'subjectss', SubjectViewSet)
+router.register(r'session', SessionViewSet)
+router.register(r'subject', SubjectViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
