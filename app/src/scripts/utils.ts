@@ -1,16 +1,17 @@
 import { Interval } from "scripts/types";
 
-export function formatSessionDate(dateParam: Date): string {
-    let date: Date = new Date(dateParam);
+export function formatSessionDate(dateStr: string): string {
+    // Convert ISO datetime string to Unix ms timestamp and then to JS Date
+    let date: Date = new Date(Date.parse(dateStr));
     return `${date.toLocaleTimeString("en-AU")}, ${date.toLocaleDateString(
         "en-AU"
     )}`;
 }
 
-export function calcDuration(startDateParam: Date, endDateParam: Date): string {
+export function calcDuration(startDateStr: string, endDateStr: string): string {
     let duration: string;
-    let startDate: Date = new Date(startDateParam);
-    let endDate: Date = new Date(endDateParam);
+    let startDate: Date = new Date(Date.parse(startDateStr));
+    let endDate: Date = new Date(Date.parse(endDateStr));
     let intDuration: number = (endDate.getTime() - startDate.getTime()) / 1000;
     let hours, minutes, seconds: number;
 

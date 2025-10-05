@@ -1,7 +1,7 @@
 import * as React from "react";
 import LogTableUI from "./LogTableUI";
 import { getAllSessions } from "scripts/api_methods";
-import { GETSession } from "scripts/types";
+import { Session } from "scripts/types";
 import { Row } from "scripts/types";
 import { formatSessionDate, calcDuration } from "scripts/utils";
 
@@ -18,7 +18,7 @@ export default class LogTable extends React.Component<
         this.state = { rows: [] };
     }
 
-    populateSessionRows(getSessions: GETSession[]) {
+    populateSessionRows(getSessions: Session[]) {
         let newRows: Row[] = [];
         for (let session of getSessions.reverse()) {
             newRows.push({

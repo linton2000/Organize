@@ -2,7 +2,7 @@ import * as React from "react";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Event, GETSession } from "scripts/types";
+import { Event, Session } from "scripts/types";
 import { getAllSessions } from "scripts/api_methods";
 
 interface CalendarProps {
@@ -27,7 +27,7 @@ export default class HomeCalendar extends React.Component<
         }
     }
 
-    populateEvents(getSessions: GETSession[]) {
+    populateEvents(getSessions: Session[]) {
         let newEvents: Event[] = [];
         for (let session of getSessions) {
             newEvents.push({
