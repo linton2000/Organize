@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ACTIVE_SESSION_URL, END_SESSION_URL, SESSION_URL, SUMMARY_URL } from "./constants";
+import { START_SESSION_URL, ACTIVE_SESSION_URL, END_SESSION_URL, SESSION_URL, SUMMARY_URL } from "./constants";
 import { Session, Summary } from "./types";
 
 type RequestMethod = "get" | "post";
@@ -36,7 +36,7 @@ async function apiRequest<Response, Payload = unknown>({
 /** Posts a partial Session when user starts timer.  */
 async function startSession(subject: string): Promise<Session> {
 	return apiRequest<Session, { subject: string }>({
-		url: SESSION_URL,
+		url: START_SESSION_URL,
 		method: "post",
 		payload: { subject },
 	});
@@ -50,7 +50,8 @@ async function getActiveSession(): Promise<Session> {
 
 /** Ends the currently active Session. */
 async function endSession(): Promise<Session> {
-    return apiRequest<Session>({ url: END_SESSION_URL});
+    return apiRequest<Session>({ url: END_SESSION_URL, 
+		method: "post"});
 }
 
 /** Retrieves all session data. Used in LogTable (Analytics page). */
