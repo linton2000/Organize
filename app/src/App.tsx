@@ -5,6 +5,7 @@ import Schedule from "routes/Schedule";
 import SubjectManagement from "routes/SubjectManagement";
 import Analytics from "routes/Analytics";
 
+// Random change
 export default function App() {
     return (
         <BrowserRouter>
