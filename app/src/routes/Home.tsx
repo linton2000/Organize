@@ -10,9 +10,9 @@ export default function Home() {
 
     useEffect(() => {
         document.title = "Organize!";
-    });
+    }, []);
 
-    let mainGrid: ReactElement = (
+    return (
         <Grid container spacing={0} columns={28}>
             <Grid item xs={1} />
             <Grid item xs={16}>
@@ -37,6 +37,4 @@ export default function Home() {
             </Grid>
         </Grid>
     );
-
-    return mainGrid;
 }
