@@ -19,7 +19,7 @@ class SessionInline(admin.TabularInline):
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     inlines = [SessionInline]
-    list_display = ("name", "latest_start_admin", "session_count_admin")
+    list_display = ("name", "isActive", "latest_start_admin", "session_count_admin")
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
