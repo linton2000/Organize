@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.utils import timezone
 from django.db import transaction
 from rest_framework.viewsets import ModelViewSet
@@ -7,6 +9,9 @@ from rest_framework import status
 
 from .serializers import SessionSerializer, SubjectSerializer, SummarySerializer
 from .models import Session, Subject
+
+
+MAX_SESSION_DURATION = timedelta(hours=3)
 
 
 class SessionViewSet(ModelViewSet):
@@ -95,7 +100,8 @@ class EndSessionView(APIView):
                     status=status.HTTP_404_NOT_FOUND,
                 )
 
-            session.endDate = timezone.now()
+            # Adjust endDate if session has exceeded max. duration limit
+            session.endDate = min(timezone.now(), session.startDate + MAX_SESSION_DURATION)
             session.save(update_fields=["endDate"])
 
         serializer = SessionSerializer(session)
@@ -106,11 +112,19 @@ class ActiveSessionView(APIView):
     """Return details of the most recent session that is still running."""
 
     def get(self, request):
-        session = (
-            Session.objects.filter(endDate__isnull=True)
-            .order_by('-startDate', '-sessionId')
-            .first()
-        )
+        with transaction.atomic():
+            session = (
+                Session.objects.select_for_update()
+                .filter(endDate__isnull=True)
+                .order_by('-startDate', '-sessionId')
+                .first()
+            )
+
+            # Autoclose if active session exceeds max. duration limit
+            if session and timezone.now() >= (session.startDate + MAX_SESSION_DURATION):
+                session.endDate = session.startDate  + MAX_SESSION_DURATION
+                session.save(update_fields=["endDate"])
+                session = None
 
         if session is None:
             return Response(
