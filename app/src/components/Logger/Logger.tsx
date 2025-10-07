@@ -64,7 +64,7 @@ export default function Logger(props: LoggerProps) {
 
     return (
         <Stack spacing={3}>
-            <Timer startTime={ startDate } />
+            <Timer startTime={ startDate } endTimerCallback={ endTimer } />
             <Button
                 variant="outlined"
                 color={ timerButtonColor }

@@ -7,7 +7,12 @@ interface ColorCaption {
     caption: string
 }
 
-export default function Timer(props: { startTime: string | null }) {
+interface TimerProps {
+    startTime: string | null;
+    endTimerCallback: () => Promise<void>
+}
+
+export default function Timer(props: TimerProps) {
     // Timer styling (1 inital state style & 6 session progress styles)
     const styles: Array<ColorCaption> = [
         {color: "inherit", caption: "No better time than the present..."},
@@ -26,9 +31,40 @@ export default function Timer(props: { startTime: string | null }) {
             return;
         }
 
-        setMyTime(new Date());
-        const timerID = setInterval(() => setMyTime(new Date()), 1000);
-        return () => clearInterval(timerID);
+        const startDate = new Date(props.startTime);
+        const startMillis = startDate.getTime();
+        if (Number.isNaN(startMillis)) {
+            return;
+        }
+
+        // Mirror backend max-session window (3 hours) so UI never shows extra time.
+        const MAX_SESSION_DURATION_MS = 3 * 60 * 60 * 1000; // 3 hours
+        const maxEndMillis = startMillis + MAX_SESSION_DURATION_MS;
+
+        let hasClamped = false;
+        let timerID: ReturnType<typeof setInterval> | null = null;
+
+        const updateTime = () => {
+            const nowMillis = Date.now();
+            const clampedMillis = Math.min(nowMillis, maxEndMillis);
+            // Render the clamped time (prevents the clock from racing past the limit).
+            setMyTime(new Date(clampedMillis));
+
+            if (!hasClamped && nowMillis >= maxEndMillis) {
+                // Ensure we only stop & request the callback once.
+                hasClamped = true;
+                props.endTimerCallback().catch(console.error);
+            }
+        };
+
+        updateTime();
+        timerID = setInterval(updateTime, 1000);
+
+        return () => {
+            if (timerID !== null) {
+                clearInterval(timerID);
+            }
+        };
     }, [props.startTime]);
 
     const startTimestamp = props.startTime ? Date.parse(props.startTime) : NaN;
@@ -59,6 +95,7 @@ export default function Timer(props: { startTime: string | null }) {
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
     const timeStr = `${buildTimePart(hours)}:${buildTimePart(minutes)}:${buildTimePart(seconds)}`;
+
 
     return (
         <Stack spacing={1}>
