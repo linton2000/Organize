@@ -21,6 +21,15 @@ export default class QuickSummary
 		);
 	}
 
+	componentDidUpdate() {
+        if (this.props.rerender == true) {
+            getSummary().then(
+				(res) => this.setState({ lwDate: new Date(res.lastWorked*1000) })
+			);
+            this.props.setRerender(false);
+        }
+    }
+
 	render() {
 		return (
 			<Stack spacing={2}>
