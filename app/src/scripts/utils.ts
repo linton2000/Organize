@@ -40,6 +40,7 @@ export function calcInterval(start: Date, end: Date): Interval {
 		mins: Math.floor( (totalSecs % 3600) / 60 ),
 		hrs: Math.floor( (totalSecs % 86400) / 3600 ),
 		days: Math.floor( totalSecs / 86400 ),
+        totalMins: totalSecs / 60
 	}
 	return res;
 }

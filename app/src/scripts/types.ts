@@ -11,7 +11,7 @@ export interface Subject {
 }
 
 export interface Summary {
-	lastWorked: number;
+	lastWorked: string;
 }
 
 export interface Row {
@@ -34,4 +34,5 @@ export interface Interval {
 	hrs: number;
 	mins: number;
 	secs: number;
+    totalMins: number;
 }
