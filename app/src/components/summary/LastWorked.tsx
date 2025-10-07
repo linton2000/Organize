@@ -15,7 +15,7 @@ export default function LastWorked(props: { lastWorkedDate: string | null}){
 	}, [props.lastWorkedDate]);
 
 	let lastWorkedStr: string = '-';
-	let colour_i: number = 0
+	let colour_i: number = props.lastWorkedDate ? 1 : 0;
 
 	// Color logic for last worked time (pleasant colours for more recent work)
 	const colours: Array<string> = ["inherit", purple[700], green[700], yellow[900], orange[900], red[700]];
@@ -37,13 +37,13 @@ export default function LastWorked(props: { lastWorkedDate: string | null}){
 		}
 
 		if(interval.totalMins >= 5 && interval.totalMins < 15){
-			colour_i = 1;
-		} else if(interval.totalMins >= 15 && interval.totalMins < 30){
 			colour_i = 2;
+		} else if(interval.totalMins >= 15 && interval.totalMins < 30){
+			colour_i = 3;
 		} else if(interval.totalMins >= 30 && interval.totalMins < 60){
-			colour_i = 3
-		} else if(interval.totalMins >= 60){
 			colour_i = 4
+		} else if(interval.totalMins >= 60){
+			colour_i = 5
 		}
 	}
 
