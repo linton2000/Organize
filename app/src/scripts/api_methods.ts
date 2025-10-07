@@ -1,40 +1,67 @@
 import axios from "axios";
-import Session from "../domain/Session";
-import { SESSION_URL, SUMMARY_URL } from "./constants";
-import { POSTSession, GETSession, GETSummary } from "./types";
+import { START_SESSION_URL, ACTIVE_SESSION_URL, END_SESSION_URL, SESSION_URL, SUMMARY_URL } from "./constants";
+import { Session, Summary } from "./types";
 
-/** Makes a POST request using axios to the Django API to store session parameter attributes */
-async function storeSession(session: Session): Promise<void> {
-    let postSession: POSTSession = {
-        startDate: session.startTime,
-        endDate: session.endTime as Date,
-        subject: session.subject,
-    };
+type RequestMethod = "get" | "post";
 
-    const result = axios.post(SESSION_URL, postSession);
-    //console.log(result);
+interface RequestConfig<Payload> {
+	url: string;
+	method?: RequestMethod;
+	payload?: Payload;
 }
 
-/** Makes a GET request using axios to Django API and returns an array of all stored Sessions */
-async function getAllSessions(): Promise<GETSession[]> {
-    let getArray: Array<GETSession> = [];
-
-    const result = await axios
-        .get(SESSION_URL)
-        .then((response) => (getArray = response.data));
-
-    //console.log(result);
-    return getArray;
+async function apiRequest<Response, Payload = unknown>({
+	url,
+	method = "get",
+	payload,
+}: RequestConfig<Payload>): Promise<Response> {
+	try {
+		const response =
+			method === "get"
+				? await axios.get<Response>(url)
+				: await axios.post<Response>(url, payload);
+		return response.data;
+	} catch (error: unknown) {
+		if (axios.isAxiosError(error)) {
+			const status = error.response?.status;
+			const message = error.response?.data ?? error.message;
+			console.error(`API request failed${status ? ` (${status})` : ""}: ${message}`);
+		} else {
+			console.error("API request failed", error);
+		}
+		throw error;
+	}
 }
 
-async function getSummary(): Promise<GETSummary> {
-	let summary: GETSummary = { lastWorked: 0};
-
-	const result = await axios
-		.get(SUMMARY_URL)	
-		.then((response) => (summary = response.data));
-	
-	//console.log(result);		
-	return summary;
+/** Posts a partial Session when user starts timer.  */
+async function startSession(subject: string): Promise<Session> {
+	return apiRequest<Session, { subject: string }>({
+		url: START_SESSION_URL,
+		method: "post",
+		payload: { subject },
+	});
 }
-export { storeSession, getAllSessions, getSummary };
+
+/** Retrieves the active (most recent with null endDate) Session. 
+ * Used to persist Timer across browser refreshes. */
+async function getActiveSession(): Promise<Session> {
+    return apiRequest<Session>({ url: ACTIVE_SESSION_URL});
+}
+
+/** Ends the currently active Session. */
+async function endSession(): Promise<Session> {
+    return apiRequest<Session>({ url: END_SESSION_URL, 
+		method: "post"});
+}
+
+/** Retrieves all session data. Used in LogTable (Analytics page). */
+async function getAllSessions(): Promise<Session[]> {
+	return apiRequest<Session[]>({ url: SESSION_URL });
+}
+
+/** Retrieves basic stats for the home page (e.g. last worked time) */
+async function getSummary(): Promise<Summary> {
+	return apiRequest<Summary>({ url: SUMMARY_URL });
+}
+
+export { startSession, getAllSessions, getSummary, getActiveSession, endSession };

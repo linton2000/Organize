@@ -6,23 +6,19 @@ import HomeCalendar from "components/HomeCalendar";
 import QuickSummary from "components/summary/QuickSummary";
 
 export default function Home() {
-    const [rerender, setRerender] = useState<boolean>();
-
-    if (rerender === undefined) {
-        setRerender(false);
-    }
+    const [rerender, setRerender] = useState<boolean>(false);
 
     useEffect(() => {
         document.title = "Organize!";
-    });
+    }, []);
 
-    let mainGrid: ReactElement = (
+    return (
         <Grid container spacing={0} columns={28}>
             <Grid item xs={1} />
             <Grid item xs={16}>
                 <HomeCalendar
-                    rerender={rerender as boolean}
-                    setRerender={setRerender}
+                    rerender={ rerender }
+                    setRerender={ setRerender }
                 />
             </Grid>
             <Grid item xs={2} />
@@ -30,17 +26,18 @@ export default function Home() {
                 <Grid item maxHeight={375} xs={20}>
                     <Paper elevation={10} sx={{ padding: 5, marginTop: 5 }}>
                         <Logger
-                            rerender={rerender as boolean}
-                            setRerender={setRerender}
+                            rerender={ rerender }
+                            setRerender={ setRerender }
                         />
                     </Paper>
                 </Grid>
                 <Grid item xs={28}>
-                    <QuickSummary />
+                    <QuickSummary
+                        rerender={ rerender }
+                        setRerender={ setRerender }
+                    />
                 </Grid>
             </Grid>
         </Grid>
     );
-
-    return mainGrid;
 }
