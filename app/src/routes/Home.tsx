@@ -18,7 +18,7 @@ export default function Home() {
             <Grid item xs={16}>
                 <HomeCalendar
                     rerender={ rerender }
-                    setRerender={setRerender}
+                    setRerender={ setRerender }
                 />
             </Grid>
             <Grid item xs={2} />
@@ -27,12 +27,15 @@ export default function Home() {
                     <Paper elevation={10} sx={{ padding: 5, marginTop: 5 }}>
                         <Logger
                             rerender={ rerender }
-                            setRerender={setRerender}
+                            setRerender={ setRerender }
                         />
                     </Paper>
                 </Grid>
                 <Grid item xs={28}>
-                    <QuickSummary/>
+                    <QuickSummary
+                        rerender={ rerender }
+                        setRerender={ setRerender }
+                    />
                 </Grid>
             </Grid>
         </Grid>
