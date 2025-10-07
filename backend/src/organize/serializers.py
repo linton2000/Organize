@@ -13,6 +13,7 @@ class SubjectSerializer(serializers.ModelSerializer):
         model = Subject
         fields = '__all__'
 
+
 class SummarySerializer(serializers.Serializer):
-    lastWorked = serializers.IntegerField(allow_null=True)
+    lastWorked = serializers.CharField(allow_null=True) # ISO string
     

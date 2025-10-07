@@ -34,15 +34,12 @@ class SummaryView(APIView):
         """ Return last worked date as Unix time interval (seconds since epoch)
         """
         last = Session.objects.order_by('-endDate').first()
-        ts = None
+        lw = None
         if last and last.endDate:
-            dt = last.endDate
-            if timezone.is_naive(dt):
-                dt = timezone.make_aware(dt)
-            ts = int(dt.timestamp())
+            lw = last.endDate
 
-        data = {"lastWorked": ts}
-        return Response(SummarySerializer(data).data)
+        serializer = SummarySerializer({ "lastWorked": lw})
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class StartSessionView(APIView):
