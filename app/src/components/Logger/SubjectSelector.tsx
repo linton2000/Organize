@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 
 import { Subject } from "scripts/types";
 import { getAllSubjects } from "scripts/api_methods";
@@ -27,7 +27,7 @@ export default function SubjectSelector(props: SubSelProps) {
         }
 
         loadActiveSubjects();
-    })
+    }, [])
 
     return (
         <FormControl fullWidth>
@@ -44,7 +44,7 @@ export default function SubjectSelector(props: SubSelProps) {
                     <em>None</em>
                 </MenuItem>
                 {subjects.map((subject) => (
-                    <MenuItem value={subject.name}>{subject.name}</MenuItem>
+                    <MenuItem key={subject.name} value={subject.name}>{subject.name}</MenuItem>
                 ))}
             </Select>
         </FormControl>
