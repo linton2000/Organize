@@ -34,7 +34,7 @@ export function calcDuration(startDateStr: string, endDateStr: string): string {
 }
 
 export function calcInterval(start: Date, end: Date): Interval {
-    let totalSecs: number = Math.round((end.getTime() - start.getTime()) / 1000);
+    let totalSecs: number = Math.max(0, Math.round((end.getTime() - start.getTime()) / 1000));
 	let res: Interval = {
 		secs: Math.floor( totalSecs % 60 ),
 		mins: Math.floor( (totalSecs % 3600) / 60 ),
