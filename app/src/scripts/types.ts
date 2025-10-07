@@ -5,6 +5,11 @@ export interface Session {
     subject: string
 }
 
+export interface Subject {
+    name: string,
+    isActive: boolean
+}
+
 export interface Summary {
 	lastWorked: number;
 }
