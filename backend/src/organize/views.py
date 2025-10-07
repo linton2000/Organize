@@ -12,6 +12,7 @@ from .models import Session, Subject
 
 
 MAX_SESSION_DURATION = timedelta(hours=3)
+MIN_SESSION_DURATION = timedelta(minutes=3)
 
 
 class SessionViewSet(ModelViewSet):
@@ -102,6 +103,15 @@ class EndSessionView(APIView):
 
             # Adjust endDate if session has exceeded max. duration limit
             session.endDate = min(timezone.now(), session.startDate + MAX_SESSION_DURATION)
+
+            # If a session of insufficient duration is ended, it will not be recorded
+            if (session.endDate - session.startDate) < MIN_SESSION_DURATION:
+                session.delete()
+                return Response(
+                    {"detail": "Session discarded due to insufficient duration."},
+                    status=status.HTTP_202_ACCEPTED
+                )
+            
             session.save(update_fields=["endDate"])
 
         serializer = SessionSerializer(session)
