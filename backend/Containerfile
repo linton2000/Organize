@@ -1,14 +1,14 @@
 # Importing a hardened python runtime UBI from redhat
-FROM --platform=arm64 registry.access.redhat.com/ubi9/python-39:latest
+FROM docker.io/python:3.11
 
 # Installing all Django project dependencies in /app (cntr)
 WORKDIR /app
 COPY ./requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copying djnago api src (need to look at hot reloading & separating sqlite into a volume)
+# Copying django api src (need to look at hot reloading & separating sqlite into a volume)
 COPY ./src .
 
 # Serving REST API on localhost:8000
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--noreload"]
