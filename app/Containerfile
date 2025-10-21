@@ -1,26 +1,14 @@
-# Pulling hardened (UBI) builder image from Redhat for arm64 (MacOS) platform
-FROM --platform=arm64 registry.access.redhat.com/ubi9/nodejs-18:latest as dev
+# Simple dev spa container
+FROM docker.io/node:20
 
-# Pre-compile stage: Copy TypeScript config & install react dependencies (/node modules) into /app
-USER 1001
+# Copy TypeScript config & install react dependencies into /app
 WORKDIR /app
-COPY --chown=1001:1001 ./tsconfig.json ./package.json ./
+COPY ./tsconfig.json ./package.json ./
 RUN npm install
 
-# Dynamic development: Empty container directories for bind mounts with host src directories
-RUN mkdir ./public
-RUN mkdir ./src
-CMD npm start
-
-# Compile stage: Build stage image for compiling production app
-FROM dev as build
+# Will make this dynamic later (bind mounts)
 COPY ./public ./public
 COPY ./src ./src
-RUN npm run build
 
-# Production: Lightweight production container (nginx server) to serve compiled react app
-FROM --platform=arm64 registry.access.redhat.com/ubi9/nginx-120 as prod
-WORKDIR /opt/app-root/src
-COPY ./nginx.conf "${NGINX_CONF_PATH}"
-COPY --from=builder /app/build .
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+CMD ["npm", "start"]
