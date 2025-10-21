@@ -2,22 +2,23 @@
 services:
   # React App
   app:
-    container_name: app-cntr
+    container_name: orgapp-cntr
     restart: unless-stopped
     build:
       context: ./app
       dockerfile: Containerfile
-      target: dev
     ports:
       - 3000:3000
 
   # Django API
   api:
-    container_name: api-cntr
+    container_name: orgapi-cntr
     restart: unless-stopped
     build:
       context: ./backend
       dockerfile: Containerfile
     ports:
       - 8000:8000
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
       
