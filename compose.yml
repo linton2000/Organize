@@ -2,17 +2,23 @@
 services:
   # React App
   app:
-    container_name: orgapp-cntr
     restart: unless-stopped
     build:
       context: ./app
       dockerfile: Containerfile
     ports:
       - 3000:3000
+    environment:
+      - HOST=${HOST}
+      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING}
+      - WATCHPACK_POLLING=${WATCHPACK_POLLING}
+      - WDS_SOCKET_PORT=${WDS_SOCKET_PORT}
+    app:
+      depends_on:
+        - api
 
   # Django API
   api:
-    container_name: orgapi-cntr
     restart: unless-stopped
     build:
       context: ./backend
@@ -21,4 +27,6 @@ services:
       - 8000:8000
     environment:
       - SECRET_KEY=${SECRET_KEY}
+      - PYTHONDONTWRITEBYTECODE=${PYTHONDONTWRITEBYTECODE}
+      - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
       
