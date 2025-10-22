@@ -5,6 +5,7 @@ from django.utils.html import format_html
 
 class Subject(models.Model):
     name = models.CharField(primary_key=True, max_length=30)
+    isActive = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Subject: {self.name}"

@@ -5,8 +5,13 @@ export interface Session {
     subject: string
 }
 
+export interface Subject {
+    name: string,
+    isActive: boolean
+}
+
 export interface Summary {
-	lastWorked: number;
+	lastWorked: string;
 }
 
 export interface Row {
@@ -29,4 +34,5 @@ export interface Interval {
 	hrs: number;
 	mins: number;
 	secs: number;
+    totalMins: number;
 }

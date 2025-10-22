@@ -1,41 +1,36 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
+
 import LastWorked from "./LastWorked";
 import { getSummary } from "scripts/api_methods";
+import { Summary } from "scripts/types";
 
-interface QuickSummaryState {
-	lwDate: Date;
+
+interface QuickSummaryProps {
+    rerender: boolean;
+    setRerender: (arg0: boolean) => void;
 }
 
-export default class QuickSummary 
-	extends React.Component<any, QuickSummaryState>{
+export default function QuickSummary(props: QuickSummaryProps) {
+	const [lastWorkedDate, setLastWorkedDate] = useState<string | null>(null)
 
-	constructor(props: any){
-		super(props);
-		this.state = { lwDate: new Date() };
-	}
+	useEffect(() => {
+		async function loadSummary(){
+			try {
+				const summary: Summary = await getSummary();
+				setLastWorkedDate(summary.lastWorked);
+			} catch (e) {
+				console.error(e);
+			}
+		}
 
-	componentDidMount() {
-		getSummary().then(
-			(res) => this.setState({ lwDate: new Date(res.lastWorked*1000) })
-		);
-	}
+		loadSummary()
+	}, [props.rerender])
 
-	componentDidUpdate() {
-        if (this.props.rerender == true) {
-            getSummary().then(
-				(res) => this.setState({ lwDate: new Date(res.lastWorked*1000) })
-			);
-            this.props.setRerender(false);
-        }
-    }
-
-	render() {
-		return (
-			<Stack spacing={2}>
-				<h1></h1>
-				<LastWorked lwDate={this.state.lwDate} />
-			</Stack>
-		);
-	}
+	return (
+		<Stack spacing={2}>
+			<h1></h1>
+			<LastWorked lastWorkedDate={ lastWorkedDate } />
+		</Stack>
+	);
 }

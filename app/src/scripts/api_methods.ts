@@ -1,6 +1,6 @@
 import axios from "axios";
-import { START_SESSION_URL, ACTIVE_SESSION_URL, END_SESSION_URL, SESSION_URL, SUMMARY_URL } from "./constants";
-import { Session, Summary } from "./types";
+import { SESSION_URL, SUBJECT_URL, SUMMARY_URL, START_SESSION_URL, ACTIVE_SESSION_URL, END_SESSION_URL } from "./constants";
+import { Session, Subject, Summary } from "./types";
 
 type RequestMethod = "get" | "post";
 
@@ -33,6 +33,21 @@ async function apiRequest<Response, Payload = unknown>({
 	}
 }
 
+/** Retrieves all session data. Used in LogTable (Analytics page). */
+async function getAllSessions(): Promise<Session[]> {
+	return apiRequest<Session[]>({ url: SESSION_URL });
+}
+
+/** Retrieves all subjects. Needed in subject selector & subject management page */
+async function getAllSubjects(): Promise<Subject[]> {
+	return apiRequest<Subject[]>({ url: SUBJECT_URL })
+}
+
+/** Retrieves basic stats for the home page (e.g. last worked time) */
+async function getSummary(): Promise<Summary> {
+	return apiRequest<Summary>({ url: SUMMARY_URL });
+}
+
 /** Posts a partial Session when user starts timer.  */
 async function startSession(subject: string): Promise<Session> {
 	return apiRequest<Session, { subject: string }>({
@@ -54,14 +69,4 @@ async function endSession(): Promise<Session> {
 		method: "post"});
 }
 
-/** Retrieves all session data. Used in LogTable (Analytics page). */
-async function getAllSessions(): Promise<Session[]> {
-	return apiRequest<Session[]>({ url: SESSION_URL });
-}
-
-/** Retrieves basic stats for the home page (e.g. last worked time) */
-async function getSummary(): Promise<Summary> {
-	return apiRequest<Summary>({ url: SUMMARY_URL });
-}
-
-export { startSession, getAllSessions, getSummary, getActiveSession, endSession };
+export { getAllSubjects, getAllSessions, getSummary, startSession, getActiveSession, endSession };
