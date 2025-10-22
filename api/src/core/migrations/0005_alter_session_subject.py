@@ -7,13 +7,13 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('organize', '0004_alter_session_startdate'),
+        ('core', '0004_alter_session_startdate'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='session',
             name='subject',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='sessions', to='organize.subject'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='sessions', to='core.subject'),
         ),
     ]

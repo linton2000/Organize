@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('organize', '0003_finalize_subject_fk'),
+        ('core', '0003_finalize_subject_fk'),
     ]
 
     operations = [

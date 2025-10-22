@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('organize', '0002_subject_session_subject_fk'),
+        ('core', '0002_subject_session_subject_fk'),
     ]
 
     operations = [
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             model_name='session',
             name='subject',
             field=models.ForeignKey(
-                to='organize.subject',
+                to='core.subject',
                 on_delete=django.db.models.deletion.DO_NOTHING,
                 null=False,
             ),

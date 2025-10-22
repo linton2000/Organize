@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('organize', '0005_alter_session_subject'),
+        ('core', '0005_alter_session_subject'),
     ]
 
     operations = [
