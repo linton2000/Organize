@@ -1,23 +1,64 @@
 # Compose file for local testing purposes
 services:
-  # React App
+  # React SPA
   app:
-    container_name: app-cntr
-    restart: unless-stopped
     build:
       context: ./app
       dockerfile: Containerfile
-      target: dev
     ports:
       - 3000:3000
+    environment:
+      - REACT_APP_API_URL=${REACT_APP_API_URL}
+      - HOST=${HOST}
+      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING}
+      - WATCHPACK_POLLING=${WATCHPACK_POLLING}
+      - WDS_SOCKET_PORT=${WDS_SOCKET_PORT}
+    depends_on:
+      - api
+    volumes:
+      - ./app/src:/app/src
+      - ./app/public:/app/public
 
   # Django API
   api:
-    container_name: api-cntr
-    restart: unless-stopped
+    restart: on-failure
     build:
       context: ./backend
       dockerfile: Containerfile
     ports:
       - 8000:8000
-      
+    environment:      
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - PYTHONDONTWRITEBYTECODE=${PYTHONDONTWRITEBYTECODE}
+      - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app
+
+  # Postgres DB
+  db:
+    restart: unless-stopped
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
