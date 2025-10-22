@@ -31,7 +31,7 @@ class SubjectViewSet(ModelViewSet):
 
 class SummaryView(APIView):
     def get(self, request):
-        """ Return last worked date as Unix time interval (seconds since epoch)
+        """ Return last worked date as an ISO 8601 datetime string
         """
         last = Session.objects.filter(endDate__isnull=False) \
                               .order_by('-endDate').first()
