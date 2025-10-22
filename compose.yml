@@ -2,7 +2,6 @@
 services:
   # React App
   app:
-    restart: unless-stopped
     build:
       context: ./app
       dockerfile: Containerfile
@@ -13,13 +12,12 @@ services:
       - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING}
       - WATCHPACK_POLLING=${WATCHPACK_POLLING}
       - WDS_SOCKET_PORT=${WDS_SOCKET_PORT}
-    app:
-      depends_on:
-        - api
+    depends_on:
+      - api
 
   # Django API
   api:
-    restart: unless-stopped
+    restart: on-failure
     build:
       context: ./backend
       dockerfile: Containerfile
@@ -29,4 +27,3 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - PYTHONDONTWRITEBYTECODE=${PYTHONDONTWRITEBYTECODE}
       - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
-      
