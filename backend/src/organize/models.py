@@ -12,11 +12,11 @@ class Subject(models.Model):
     
     @property
     def session_count(self):
-        return models.Count('sessions')
+        return self.sessions.count()
     
     @property
     def latest_session(self):
-        return models.Max("sessions__endDate")
+        return self.sessions.order_by("-endDate").first()
     
 
 class Session(models.Model):
