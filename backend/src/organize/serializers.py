@@ -15,5 +15,5 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class SummarySerializer(serializers.Serializer):
-    lastWorked = serializers.CharField(allow_null=True) # ISO string
+    lastWorked = serializers.DateTimeField() # Received as ISO string in frontend
     
