@@ -1,9 +1,11 @@
 # Compose file for local testing purposes
+name: ${COMPOSE_PROJECT_NAME}
+
 services:
   # React Client
-  app:
+  web:
     build:
-      context: ./web
+      context: ${WEB_DIR_PATH}
       dockerfile: Containerfile
     ports:
       - 3000:3000
@@ -16,14 +18,14 @@ services:
     depends_on:
       - api
     volumes:
-      - ./web/src:/app/src
-      - ./web/public:/app/public
+      - ${WEB_DIR_PATH}/src:/app/src
+      - ${WEB_DIR_PATH}/public:/app/public
 
   # Django API
   api:
     restart: on-failure
     build:
-      context: ./api
+      context: ${API_DIR_PATH}
       dockerfile: Containerfile
     ports:
       - 8000:8000
@@ -40,7 +42,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./api/src:/app
+      - ${API_DIR_PATH}/src:/app
 
   # Postgres DB
   db:
