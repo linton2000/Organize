@@ -1,0 +1,5 @@
+# This is a hardened, minimal CVE image built and maintained by Bitnami
+FROM docker.io/bitnami/postgresql
+
+# Postgres DB connection port
+EXPOSE 5432
