@@ -33,7 +33,8 @@ class SummaryView(APIView):
     def get(self, request):
         """ Return last worked date as Unix time interval (seconds since epoch)
         """
-        last = Session.objects.order_by('-endDate').first()
+        last = Session.objects.filter(endDate__isnull=False) \
+                              .order_by('-endDate').first()
         lw = None
         if last and last.endDate:
             lw = last.endDate
