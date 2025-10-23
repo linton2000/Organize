@@ -7,40 +7,18 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import SessionSerializer, SubjectSerializer, SummarySerializer
-from .models import Session, Subject
+from ..serializers import SessionSerializer
+from ..models import Session, Subject
 
 
 MAX_SESSION_DURATION = timedelta(hours=3)
 MIN_SESSION_DURATION = timedelta(minutes=3)
-
 
 class SessionViewSet(ModelViewSet):
     """ For fetching and creating sessions
     """
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
-
-
-class SubjectViewSet(ModelViewSet):
-    """ For fetching and creating subjects
-    """
-    queryset = Subject.objects.all()
-    serializer_class = SubjectSerializer
-
-
-class SummaryView(APIView):
-    def get(self, request):
-        """ Return last worked date as an ISO 8601 datetime string
-        """
-        last = Session.objects.filter(endDate__isnull=False) \
-                              .order_by('-endDate').first()
-        lw = None
-        if last and last.endDate:
-            lw = last.endDate
-
-        serializer = SummarySerializer({ "lastWorked": lw})
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class StartSessionView(APIView):
@@ -81,6 +59,34 @@ class StartSessionView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+class ActiveSessionView(APIView):
+    """Return details of the most recent session that is still running."""
+
+    def get(self, request):
+        with transaction.atomic():
+            session = (
+                Session.objects.select_for_update()
+                .filter(endDate__isnull=True)
+                .order_by('-startDate', '-sessionId')
+                .first()
+            )
+
+            # Autoclose if active session exceeds max. duration limit
+            if session and timezone.now() >= (session.startDate + MAX_SESSION_DURATION):
+                session.endDate = session.startDate  + MAX_SESSION_DURATION
+                session.save(update_fields=["endDate"])
+                session = None
+
+        if session is None:
+            return Response(
+                {"detail": "No active session found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = SessionSerializer(session)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
 class EndSessionView(APIView):
     """Close the most recent session that is still running."""
 
@@ -111,34 +117,6 @@ class EndSessionView(APIView):
                 )
             
             session.save(update_fields=["endDate"])
-
-        serializer = SessionSerializer(session)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class ActiveSessionView(APIView):
-    """Return details of the most recent session that is still running."""
-
-    def get(self, request):
-        with transaction.atomic():
-            session = (
-                Session.objects.select_for_update()
-                .filter(endDate__isnull=True)
-                .order_by('-startDate', '-sessionId')
-                .first()
-            )
-
-            # Autoclose if active session exceeds max. duration limit
-            if session and timezone.now() >= (session.startDate + MAX_SESSION_DURATION):
-                session.endDate = session.startDate  + MAX_SESSION_DURATION
-                session.save(update_fields=["endDate"])
-                session = None
-
-        if session is None:
-            return Response(
-                {"detail": "No active session found."},
-                status=status.HTTP_404_NOT_FOUND,
-            )
 
         serializer = SessionSerializer(session)
         return Response(serializer.data, status=status.HTTP_200_OK)
