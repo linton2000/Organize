@@ -6,8 +6,9 @@ WORKDIR /app
 COPY ./requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copying django api src (need to look at hot reloading & separating sqlite into a volume)
+# Copying Django code & collecting static files for admin site
 COPY ./src .
+RUN python manage.py collectstatic --noinput
 
 # Serving REST API on localhost:8000
 EXPOSE 8000
