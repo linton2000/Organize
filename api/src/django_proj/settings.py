@@ -26,9 +26,21 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG', 'true').lower() == 'true'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+def get_list(name):
+    value = os.getenv(name, '')
+    return [item.strip() for item in value.split(',') if item.strip()]
 
-CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = get_list('ALLOWED_HOSTS')
+CORS_ALLOWED_ORIGINS = get_list('CORS_ALLOWED_ORIGINS')
+CSRF_ALLOWED_ORIGINS = get_list('CSRF_ALLOWED_ORIGINS')
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False    # Frontend needs to read CSRF token
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 
 # Application definition
