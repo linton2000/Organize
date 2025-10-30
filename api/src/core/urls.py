@@ -7,6 +7,9 @@ from .views import (
     StartSessionView,
     EndSessionView,
     ActiveSessionView,
+    LoginView,
+    LogoutView,
+    MeView
 )
 
 router = DefaultRouter()
@@ -18,5 +21,8 @@ urlpatterns = [
     path('start-session/', StartSessionView.as_view(), name='start-session'),
     path('end-session/', EndSessionView.as_view(), name='end-session'),
     path('active-session/', ActiveSessionView.as_view(), name='active-session'),
-    path('summary/', SummaryView.as_view(), name='summary')
+    path('summary/', SummaryView.as_view(), name='summary'),
+    path('auth/login/', LoginView.as_view(), name='auth-login'),
+    path('auth/logout/', LogoutView.as_view(), name='auth-logout'),
+    path('auth/me/', MeView.as_view(), name='auth-me'),
 ]
