@@ -1,9 +1,21 @@
 import axios from "axios";
-import { SESSION_URL, SUBJECT_URL, SUMMARY_URL, START_SESSION_URL, ACTIVE_SESSION_URL, END_SESSION_URL } from "./constants";
-import { Session, Subject, Summary } from "./types";
+import { 
+	SESSION_URL, 
+	SUBJECT_URL, 
+	SUMMARY_URL, 
+	START_SESSION_URL, 
+	ACTIVE_SESSION_URL, 
+	END_SESSION_URL, 
+	LOGIN_URL,
+	ME_URL,
+	LOGOUT_URL 
+} from "./constants";
+import { Session, Subject, Summary, User } from "./types";
+
+
+axios.defaults.withCredentials = true;
 
 type RequestMethod = "get" | "post";
-
 interface RequestConfig<Payload> {
 	url: string;
 	method?: RequestMethod;
@@ -65,8 +77,42 @@ async function getActiveSession(): Promise<Session> {
 
 /** Ends the currently active Session. */
 async function endSession(): Promise<Session> {
-    return apiRequest<Session>({ url: END_SESSION_URL, 
-		method: "post"});
+    return apiRequest<Session>({ 
+		url: END_SESSION_URL, 
+		method: "post"
+	});
 }
 
-export { getAllSubjects, getAllSessions, getSummary, startSession, getActiveSession, endSession };
+/** Logs in using username & password in JSON payload */
+async function login(username: string, password: string): Promise<User> {
+	return apiRequest<User>({
+		url: LOGIN_URL,
+		method: "post",
+		payload: { username, password }
+	})
+}
+
+/** Retrieves details of the currently logged in user */
+async function me(): Promise<User | null> {
+	return apiRequest<User | null>({
+		url: ME_URL,
+		method: "get"
+	})
+}
+
+/** Simple log out method */
+async function logout(): Promise<void> {
+	return apiRequest<void>({
+		url: LOGOUT_URL,
+		method: "post"
+	})
+}
+
+export { 
+	getAllSubjects, 
+	getAllSessions, 
+	getSummary, 
+	startSession, 
+	getActiveSession, 
+	endSession 
+};
