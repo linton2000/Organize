@@ -44,3 +44,11 @@ export function calcInterval(start: Date, end: Date): Interval {
 	}
 	return res;
 }
+
+export function getCookie(name: string): string | undefined {
+  return document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .filter((part) => part.startsWith(`${name}=`))
+    .map((part) => decodeURIComponent(part.slice(name.length + 1)))[0];
+}
