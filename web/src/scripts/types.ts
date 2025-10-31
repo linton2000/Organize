@@ -36,3 +36,9 @@ export interface Interval {
 	secs: number;
     totalMins: number;
 }
+
+export interface User {
+    username: string,
+    fName: string,
+    lName: string,
+}
