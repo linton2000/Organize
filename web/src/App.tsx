@@ -1,17 +1,20 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "routes/Login"
 import Layout from "routes/Layout";
 import Home from "routes/Home";
 import Schedule from "routes/Schedule";
 import SubjectManagement from "routes/SubjectManagement";
 import Analytics from "routes/Analytics";
 
-// Random change
+
 export default function App() {
+    
     return (
         <BrowserRouter>
             <Routes>
+                <Route index element={<Login />} />
                 <Route path="/" element={<Layout/>}>
-                    <Route index element={<Home />} />
+                    <Route path="home" element={<Home />} />
                     <Route path="schedule" element={<Schedule />} />
                     <Route path="analytics" element={<Analytics />} />
                     <Route path="subject-management" element={<SubjectManagement />} />
