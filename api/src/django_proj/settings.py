@@ -30,14 +30,18 @@ def get_list(name):
     value = os.getenv(name, '')
     return [item.strip() for item in value.split(',') if item.strip()]
 
+# CORS & Other Security settings
 ALLOWED_HOSTS = get_list('ALLOWED_HOSTS')
 CORS_ALLOWED_ORIGINS = get_list('CORS_ALLOWED_ORIGINS')
-CSRF_ALLOWED_ORIGINS = get_list('CSRF_ALLOWED_ORIGINS')
+CORS_ALLOW_CREDENTIALS = True
 
+# Session Auth settings
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 
+# CSRF Settings
+CSRF_ALLOWED_ORIGINS = get_list('CSRF_ALLOWED_ORIGINS')
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = False    # Frontend needs to read CSRF token
 CSRF_COOKIE_SAMESITE = 'Lax'
@@ -59,6 +63,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -66,7 +71,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware'
 ]
 
