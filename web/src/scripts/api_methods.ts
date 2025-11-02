@@ -37,9 +37,9 @@ async function apiRequest<Response, Payload = unknown>({
 		if (axios.isAxiosError(error)) {
 			const status = error.response?.status;
 			const message = error.response?.data ?? error.message;
-			console.error(`API request failed${status ? ` (${status})` : ""}: ${message}`);
+			console.error(`API request failed (Axios error): ${status ? ` (${status})` : ""}: ${message}`);
 		} else {
-			console.error("API request failed", error);
+			console.error("API request failed (non-Axios error): ", error);
 		}
 		throw error;
 	}
