@@ -9,7 +9,7 @@ export default function Home() {
     const [rerender, setRerender] = useState<boolean>(false);
 
     useEffect(() => {
-        document.title = "Organize!";
+        document.title = "TimeBoxer";
     }, []);
 
     return (

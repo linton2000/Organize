@@ -23,7 +23,7 @@ export default function Layout() {
             >
                 <Toolbar>
                     <Typography variant="h4" noWrap component="div">
-                        Organize
+                        TimeBoxer
                     </Typography>
                 </Toolbar>
             </AppBar>
