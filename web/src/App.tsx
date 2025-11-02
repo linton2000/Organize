@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Login from "routes/Login"
 import Layout from "routes/Layout";
 import Home from "routes/Home";
@@ -8,6 +10,10 @@ import Analytics from "routes/Analytics";
 
 
 export default function App() {
+
+    useEffect(() => {
+        document.title = "TimeBoxer";
+    }, []);
     
     return (
         <BrowserRouter>

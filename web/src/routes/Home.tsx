@@ -8,10 +8,6 @@ import QuickSummary from "components/summary/QuickSummary";
 export default function Home() {
     const [rerender, setRerender] = useState<boolean>(false);
 
-    useEffect(() => {
-        document.title = "TimeBoxer";
-    }, []);
-
     return (
         <Grid container spacing={0} columns={28}>
             <Grid item xs={1} />
