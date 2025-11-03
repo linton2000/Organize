@@ -29,9 +29,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     , [csrfToken])
 
     const login = async (username: string, password: string) => {
-        if (user)
-            return;
-
         try {
             const authenticatedUser = await api_login(username, password);
             setUser(authenticatedUser);
@@ -54,7 +51,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     }
 
     const logout = async () => {
-
+        try {
+            await api_logout();
+            setUser(null);
+            toast('Logged Out Successfully!', {variant: "success"});
+            navigate('/');
+        } catch (error) {
+            // Unexpected error
+            toast('An error occurred.', {variant: "error"});
+            console.error("Unexpected login error", error);
+        }
     }
 
 

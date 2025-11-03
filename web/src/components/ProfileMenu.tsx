@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Button, Divider, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 
+import { useAuth } from "providers/AuthProvider";
 
 export default function ProfileMenu() {
     // anchorEL is the element that MUI uses to decide menu placement
     // Here it's placed below the profile button. When null, the menu just closes.
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const auth = useAuth()
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -15,10 +17,6 @@ export default function ProfileMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const handleLogout = () => {
-
-    }
 
     return (
         <div>
@@ -43,7 +41,7 @@ export default function ProfileMenu() {
                     <Typography>Linton Charles</Typography>
                 </MenuItem>
                 <Divider/>
-                <MenuItem onClick={handleLogout}>
+                <MenuItem onClick={() => auth.logout()}>
                     <ListItemIcon>
                         <LogoutIcon/>
                     </ListItemIcon>
