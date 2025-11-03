@@ -8,7 +8,7 @@ import DefaultDrawer from "components/DefaultDrawer";
 
 export default function Layout() {
     let navItemsList: Array<Array<string>> = [
-        ["Home", "/"],
+        ["Home", "/home"],
         ["Schedule", "/schedule"],
         ["Subject Management", "/subject-management"],
         ["Analytics", "/analytics"]
