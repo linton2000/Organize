@@ -19,8 +19,8 @@ export default function App() {
     
     return (
         <ToastProvider>
-            <AuthProvider>
-                <BrowserRouter>
+            <BrowserRouter>
+                <AuthProvider>
                     <Routes>
                         <Route index element={<Login />} />
                         <Route path="/" element={<Layout/>}>
@@ -30,8 +30,8 @@ export default function App() {
                             <Route path="subject-management" element={<SubjectManagement />} />
                         </Route>
                     </Routes>
-                </BrowserRouter>
-            </AuthProvider>
+                </AuthProvider>
+            </BrowserRouter>
         </ToastProvider>
     );
 }

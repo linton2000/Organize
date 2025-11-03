@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { User } from "scripts/types";
 import { getCookie } from "scripts/utils";
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
     const [csrfToken, setCsrfToken] = useState<string | undefined>(getCookie('csrftoken'));
     const {toast, close} = useToast();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (csrfToken) {
@@ -34,7 +36,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             const authenticatedUser = await api_login(username, password);
             setUser(authenticatedUser);
             setCsrfToken(getCookie("csrftoken"));  // Update with new CSRF token
-            toast('Logged In Successfully!', {variant: "success"})
+            toast('Logged In Successfully!', {variant: "success"});
+            navigate('home');
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401)
                 toast('Incorrect username or password.', {variant: "warning"});

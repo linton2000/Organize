@@ -1,5 +1,4 @@
 import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -14,7 +13,6 @@ export default function Login() {
     const [password, setPassword] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);   // To prevent resubmits while waiting
     const auth = useAuth();
-    const navigate = useNavigate();
 
     const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Stops built-in browser form submission behaviour
@@ -25,7 +23,6 @@ export default function Login() {
         setIsSubmitting(true);
         try {
             await auth.login(username, password);
-            navigate('home');
         } catch(e) {} finally {
             setIsSubmitting(false);
         }
