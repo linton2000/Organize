@@ -1,0 +1,55 @@
+import { useState } from "react";
+import { Button, Divider, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
+
+
+export default function ProfileMenu() {
+    // anchorEL is the element that MUI uses to decide menu placement
+    // Here it's placed below the profile button. When null, the menu just closes.
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+
+    }
+
+    return (
+        <div>
+            <Button
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+                variant="contained"
+                color="secondary"
+            >
+                My Profile
+            </Button>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+            >
+                <MenuItem disabled disableRipple>
+                    <Typography>Linton Charles</Typography>
+                </MenuItem>
+                <Divider/>
+                <MenuItem onClick={handleLogout}>
+                    <ListItemIcon>
+                        <LogoutIcon/>
+                    </ListItemIcon>
+                    <ListItemText> Logout </ListItemText>
+                </MenuItem>
+            </Menu>
+        </div>
+    )
+}

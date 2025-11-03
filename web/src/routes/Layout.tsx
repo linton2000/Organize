@@ -4,7 +4,9 @@ import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+
 import DefaultDrawer from "components/DefaultDrawer";
+import ProfileMenu from "components/ProfileMenu";
 
 export default function Layout() {
     let navItemsList: Array<Array<string>> = [
@@ -22,9 +24,12 @@ export default function Layout() {
                 sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
             >
                 <Toolbar>
-                    <Typography variant="h4" noWrap component="div">
+                    <Typography variant="h4" noWrap component="div" sx={{ flexGrow: 1 }}>
                         TimeBoxer
                     </Typography>
+                    <Box sx={{ mr: 8 }}>
+                        <ProfileMenu />
+                    </Box>
                 </Toolbar>
             </AppBar>
             <DefaultDrawer navItems={navItemsList} />
