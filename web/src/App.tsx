@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SnackbarProvider } from "notistack";
 
 import { AuthProvider } from "providers/AuthProvider";
+import { ToastProvider } from "providers/ToastProvider";
 import Login from "routes/Login"
 import Layout from "routes/Layout";
 import Home from "routes/Home";
@@ -18,7 +18,7 @@ export default function App() {
     }, []);
     
     return (
-        <SnackbarProvider>
+        <ToastProvider>
             <AuthProvider>
                 <BrowserRouter>
                     <Routes>
@@ -32,6 +32,6 @@ export default function App() {
                     </Routes>
                 </BrowserRouter>
             </AuthProvider>
-        </SnackbarProvider>
+        </ToastProvider>
     );
 }
