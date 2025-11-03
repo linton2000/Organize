@@ -18,20 +18,9 @@ class CustomBasicAuthentication(BasicAuthentication):
 
 
 class LoginView(APIView):
-    authentication_classes = [CustomBasicAuthentication, SessionAuthentication]
+    authentication_classes = [CustomBasicAuthentication]
 
     def post(self, request: Request) -> Response:
-        successful_authenticator = getattr(request, 'successful_authenticator', None)
-
-        # Handling login requests from already authenticated clients (sent with session cookie)
-        if request.user.is_authenticated and isinstance(successful_authenticator, SessionAuthentication):
-            return Response({
-                    'detail': 'Already logged in.',
-                    'user': UserSerializer(request.user).data,
-                }, status=status.HTTP_200_OK
-            )
-
-        # Auth with {username: str, password: str} JSON payload
         serializer = LoginSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)   # DRF catches any validation error and sends a 400 response
         user = serializer.validated_data['user']
