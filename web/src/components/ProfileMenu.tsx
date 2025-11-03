@@ -38,7 +38,7 @@ export default function ProfileMenu() {
                 onClose={handleClose}
             >
                 <MenuItem disabled disableRipple>
-                    <Typography>Linton Charles</Typography>
+                    <Typography>{auth.user?.first_name} {auth.user?.last_name}</Typography>
                 </MenuItem>
                 <Divider/>
                 <MenuItem onClick={() => auth.logout()}>
