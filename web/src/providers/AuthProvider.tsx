@@ -47,7 +47,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     }
 
     const refresh = async () => {
+        try {
+            const currentUser = await api_me();
+            setUser(currentUser);
 
+            // Need to renew token & guard against a perfectly good token being wiped
+            // if the user logged out from another tab.
+            const latestToken = getCookie("csrftoken");
+            if (latestToken) {
+                setCsrfToken(latestToken);
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                // User is not logged in
+                setUser(null);
+                return;
+            }
+            // Unexpected error
+            toast('An error occurred.', {variant: "error"});
+            console.error("Unexpected refresh error", error);
+        }
     }
 
     const logout = async () => {
