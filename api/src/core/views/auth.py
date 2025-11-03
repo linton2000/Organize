@@ -11,8 +11,14 @@ from rest_framework.permissions import IsAuthenticated
 from ..serializers import UserSerializer, LoginSerializer
 
 
+class CustomBasicAuthentication(BasicAuthentication):
+    def authenticate_header(self, request):
+        # Important see https://stackoverflow.com/questions/9859627/how-to-prevent-browser-to-invoke-basic-auth-popup-and-handle-401-error-using-jqu?lq=1
+        return None
+
+
 class LoginView(APIView):
-    authentication_classes = [BasicAuthentication, SessionAuthentication]
+    authentication_classes = [CustomBasicAuthentication, SessionAuthentication]
 
     def post(self, request: Request) -> Response:
         successful_authenticator = getattr(request, 'successful_authenticator', None)
