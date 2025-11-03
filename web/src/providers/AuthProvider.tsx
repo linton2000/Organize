@@ -41,10 +41,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401)
                 toast('Incorrect username or password.', {variant: "warning"});
-            
-            // Unexpected error
-            toast('An error occurred.', {variant: "error"});
-            console.error("Unexpected login error", error);
+            else {
+                // Unexpected error
+                toast('An error occurred.', {variant: "error"});
+                console.error("Unexpected login error", error);
+            }
         }
     }
 
