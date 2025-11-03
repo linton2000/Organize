@@ -25,8 +25,8 @@ export default function Login() {
         setIsSubmitting(true);
         try {
             await auth.login(username, password);
-            navigate('home');   // This is skipped if auth.login throws (eg. due to 401 for invalid creds)
-        } finally {
+            navigate('home');
+        } catch(e) {} finally {
             setIsSubmitting(false);
         }
     };
