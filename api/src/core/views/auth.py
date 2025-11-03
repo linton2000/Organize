@@ -1,6 +1,4 @@
-from django.contrib.auth import login as django_login
-from django.contrib.auth import logout as django_logout
-
+from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -8,7 +6,7 @@ from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from ..serializers import UserSerializer, LoginSerializer
+from ..serializers import UserSerializer
 
 
 class CustomBasicAuthentication(BasicAuthentication):
@@ -21,9 +19,18 @@ class LoginView(APIView):
     authentication_classes = [CustomBasicAuthentication]
 
     def post(self, request: Request) -> Response:
-        serializer = LoginSerializer(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)   # DRF catches any validation error and sends a 400 response
-        user = serializer.validated_data['user']
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not username or not password:
+            return Response({'detail': 'Username & password are required'}, 
+                            status=status.HTTP_400_BAD_REQUEST)
+        
+        user = authenticate(request=request, username=username, password=password)
+        if user is None:
+            return Response({'detail': 'Invalid username/password combination'},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
         django_login(request, user)
         return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
