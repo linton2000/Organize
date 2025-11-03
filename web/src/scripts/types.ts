@@ -39,6 +39,6 @@ export interface Interval {
 
 export interface User {
     username: string,
-    fName: string,
-    lName: string,
+    first_name: string,
+    last_name: string,
 }
