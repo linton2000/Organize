@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             setUser(authenticatedUser);
             setCsrfToken(getCookie("csrftoken"));  // Update with new CSRF token
             toast('Logged In Successfully!', {variant: "success"});
-            navigate('home');
+            navigate('/');
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401)
                 toast('Incorrect username or password.', {variant: "warning"});
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             await api_logout();
             setUser(null);
             toast('Logged Out Successfully!', {variant: "success"});
-            navigate('/');
+            navigate('/login');
         } catch (error) {
             // Unexpected error
             toast('An error occurred.', {variant: "error"});
