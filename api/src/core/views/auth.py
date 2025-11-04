@@ -11,8 +11,15 @@ from ..serializers import UserSerializer
 
 class CustomBasicAuthentication(BasicAuthentication):
     def authenticate_header(self, request):
-        # Important see https://stackoverflow.com/questions/9859627/how-to-prevent-browser-to-invoke-basic-auth-popup-and-handle-401-error-using-jqu?lq=1
+        # This prevents Django from sending a login popup to the browser on invalid creds
+        # See https://stackoverflow.com/questions/9859627/how-to-prevent-browser-to-invoke-basic-auth-popup-and-handle-401-error-using-jqu?lq=1
         return None
+
+
+class CustomSessionAuthentication(SessionAuthentication):
+    def authenticate_header(self, request):
+        # Adding this WWW-Authenticate header makes DRF send a 401 instead of a 403 (needed for frontend comms)
+        return 'Turn this into a 401 please'
 
 
 class LoginView(APIView):
@@ -36,7 +43,7 @@ class LoginView(APIView):
 
 
 class LogoutView(APIView):
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [CustomSessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request: Request) -> Response:
@@ -45,7 +52,7 @@ class LogoutView(APIView):
 
 
 class MeView(APIView):
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [CustomSessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request: Request) -> Response:
