@@ -1,7 +1,7 @@
 export interface Session {
     sessionId: number,
     startDate: string,
-    endDate: string,
+    endDate: string | null,  // For active sessions
     subject: string
 }
 

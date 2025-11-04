@@ -21,12 +21,13 @@ export default class LogTable extends React.Component<
     populateSessionRows(getSessions: Session[]) {
         let newRows: Row[] = [];
         for (let session of getSessions.reverse()) {
-            newRows.push({
-                name: session.subject,
-                startTime: formatSessionDate(session.startDate),
-                duration: calcDuration(session.startDate, session.endDate),
-                endTime: formatSessionDate(session.endDate),
-            });
+            if (session.endDate)
+                newRows.push({
+                    name: session.subject,
+                    startTime: formatSessionDate(session.startDate),
+                    duration: calcDuration(session.startDate, session.endDate),
+                    endTime: formatSessionDate(session.endDate),
+                });
         }
         this.setState({ rows: newRows });
     }

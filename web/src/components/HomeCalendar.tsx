@@ -30,13 +30,14 @@ export default class HomeCalendar extends React.Component<
     populateEvents(getSessions: Session[]) {
         let newEvents: Event[] = [];
         for (let session of getSessions) {
-            newEvents.push({
-                title: session.subject,
-                start: new Date(session.startDate),
-                end: new Date(session.endDate)
-            })
+            if (session.endDate)
+                newEvents.push({
+                    title: session.subject,
+                    start: new Date(session.startDate),
+                    end: new Date(session.endDate)
+                });
         }
-        this.setState({events: newEvents})
+        this.setState({events: newEvents});
     }
 
     componentWillMount() {
