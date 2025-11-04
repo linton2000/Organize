@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
+from django.middleware.csrf import get_token
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,6 +9,12 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from ..serializers import UserSerializer
+
+
+@api_view(['GET'])
+def csrf_token_view(request):
+    token = get_token(request)  # ensures the CSRF cookie is created/rotated
+    return Response({"csrfToken": token})
 
 
 class CustomSessionAuthentication(SessionAuthentication):
