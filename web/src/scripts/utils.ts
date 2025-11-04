@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Interval } from "scripts/types";
 
 export function formatSessionDate(dateStr: string): string {
@@ -51,4 +52,11 @@ export function getCookie(name: string): string | undefined {
     .map((part) => part.trim())
     .filter((part) => part.startsWith(`${name}=`))
     .map((part) => decodeURIComponent(part.slice(name.length + 1)))[0];
+}
+
+/** Returns true if error has the provided HTTP status code */
+export function checkErrorStatus(error: any, status: 401 | 404) {
+    if (axios.isAxiosError(error) && error.response?.status === status)
+        return true;
+    return false;
 }

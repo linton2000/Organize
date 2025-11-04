@@ -3,7 +3,7 @@ import { createContext, useEffect, useState, useContext, useMemo, useCallback } 
 import { useNavigate } from "react-router-dom";
 
 import { User } from "scripts/types";
-import { getCookie } from "scripts/utils";
+import { checkErrorStatus, getCookie } from "scripts/utils";
 import { login as api_login, me as api_me, logout as api_logout } from "scripts/api_methods";
 import { useToast } from "providers/ToastProvider";
 
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             toast('Logged In Successfully!', {variant: "success"});
             navigate('/');
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response?.status === 401)
+            if (checkErrorStatus(error, 401))
                 toast('Incorrect username or password.', {variant: "warning"});
             else {
                 // Unexpected error
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
                 setCsrfToken(latestToken);
             }
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response?.status === 401) {
+            if (checkErrorStatus(error, 401)) {
                 // User is not logged in
                 setUser(null);
                 return;
