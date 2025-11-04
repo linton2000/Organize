@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { User } from "scripts/types";
 import { checkErrorStatus, getCookie } from "scripts/utils";
-import { login as api_login, me as api_me, logout as api_logout } from "scripts/api_methods";
+import { login as api_login, me as api_me, logout as api_logout, csrf} from "scripts/api_methods";
 import { useToast } from "providers/ToastProvider";
 
 
@@ -24,7 +24,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
 
     useEffect(() => {
         if (csrfToken) {
-            axios.defaults.headers.common["X-CSRFToken"] = csrfToken
+            axios.defaults.headers.common["X-CSRFToken"] = csrfToken;
+        } else {
+            void (async () => {
+                await csrf();   // Gets api to set CSRF Token as cookie
+                setCsrfToken(getCookie('csrftoken')); // Need to trigger state update to run the if clause
+            });
         }}
     , [csrfToken])
 
