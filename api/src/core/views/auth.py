@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.middleware.csrf import get_token
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
@@ -23,6 +25,7 @@ class CustomSessionAuthentication(SessionAuthentication):
         return 'Turn this into a 401 please'
 
 
+@method_decorator(csrf_protect, name="dispatch")
 class LoginView(APIView):
 
     def post(self, request: Request) -> Response:
