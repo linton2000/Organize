@@ -8,5 +8,6 @@ from .session import (
 from .auth import (
     LoginView,
     LogoutView,
-    MeView
+    MeView,
+    csrf_token_view
 )

@@ -13,7 +13,7 @@ from ..serializers import UserSerializer
 
 @api_view(['GET'])
 def csrf_token_view(request):
-    token = get_token(request)  # ensures the CSRF cookie is created/rotated
+    get_token(request)  # ensures the CSRF cookie is created/rotated
     return Response({'detail': 'Token successfully set in cookie!'}, status=status.HTTP_200_OK)
 
 
