@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             void (async () => {
                 await csrf();   // Gets api to set CSRF Token as cookie
                 setCsrfToken(getCookie('csrftoken')); // Need to trigger state update to run the if clause
-            });
+            })();
         }}
     , [csrfToken])
 
