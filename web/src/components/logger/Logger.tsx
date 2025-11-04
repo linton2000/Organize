@@ -27,7 +27,7 @@ export default function Logger(props: LoggerProps) {
         async function loadActiveSession() {
             try {
                 const activeSession = await getActiveSession();
-                if (!activeSession?.startDate || !activeSession?.endDate) {
+                if (!activeSession?.startDate || activeSession?.endDate) {
                     console.error(
                         "API returned an invalid active session" +
                             activeSession.toString()
