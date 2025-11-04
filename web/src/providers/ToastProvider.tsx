@@ -21,9 +21,8 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => (
 );
 
 type ToastFn = (message: ReactNode, options?: OptionsObject) => SnackbarKey;
-type CloseFn = (key?: SnackbarKey) => void
 
-export const useToast = (): { toast: ToastFn; close: CloseFn } => {
+export const useToast = (): { toast: ToastFn; errorToast: () => void } => {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const toast = useCallback<ToastFn>(
@@ -31,5 +30,7 @@ export const useToast = (): { toast: ToastFn; close: CloseFn } => {
         [enqueueSnackbar],
     );
 
-    return { toast, close: closeSnackbar };
+    const errorToast = () => toast("An error occurred.", {variant: "error"});
+
+    return { toast, errorToast};
 };

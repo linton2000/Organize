@@ -19,7 +19,7 @@ type AuthContextValue = {
 export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
     const [csrfToken, setCsrfToken] = useState<string | undefined>(getCookie('csrftoken'));
-    const {toast, close} = useToast();
+    const {toast, errorToast} = useToast();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
                 toast('Incorrect username or password.', {variant: "warning"});
             else {
                 // Unexpected error
-                toast('An error occurred.', {variant: "error"});
+                errorToast();
                 console.error("Unexpected login error", error);
             }
         }
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
                 return;
             }
             // Unexpected error
-            toast('An error occurred.', {variant: "error"});
+            errorToast();
             console.error("Unexpected refresh error", error);
         }
     }, [toast])
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             navigate('/login');
         } catch (error) {
             // Unexpected error
-            toast('An error occurred.', {variant: "error"});
+            errorToast();
             console.error("Unexpected login error", error);
         }
     }, [toast, navigate])
