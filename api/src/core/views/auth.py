@@ -3,17 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from ..serializers import UserSerializer
-
-
-class CustomBasicAuthentication(BasicAuthentication):
-    def authenticate_header(self, request):
-        # This prevents Django from sending a login popup to the browser on invalid creds
-        # See https://stackoverflow.com/questions/9859627/how-to-prevent-browser-to-invoke-basic-auth-popup-and-handle-401-error-using-jqu?lq=1
-        return None
 
 
 class CustomSessionAuthentication(SessionAuthentication):
@@ -23,7 +16,6 @@ class CustomSessionAuthentication(SessionAuthentication):
 
 
 class LoginView(APIView):
-    authentication_classes = [CustomBasicAuthentication]
 
     def post(self, request: Request) -> Response:
         username = request.data.get("username")
