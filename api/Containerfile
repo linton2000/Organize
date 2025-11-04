@@ -1,0 +1,15 @@
+# Importing a hardened python runtime UBI from redhat
+FROM docker.io/python:3.11
+
+# Installing all Django project dependencies in /app (cntr)
+WORKDIR /app
+COPY ./requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Copying Django code & collecting static files for admin site
+COPY ./src .
+RUN python manage.py collectstatic --noinput
+
+# Serving REST API on localhost:8000
+EXPOSE 8000
+CMD ["gunicorn", "django_proj.wsgi:application", "--bind", "0.0.0.0:8000"]

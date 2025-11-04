@@ -1,9 +1,11 @@
 # Compose file for local testing purposes
+name: ${COMPOSE_PROJECT_NAME}
+
 services:
-  # React SPA
-  app:
+  # React Client
+  web:
     build:
-      context: ./app
+      context: ${WEB_DIR_PATH}
       dockerfile: Containerfile
     ports:
       - 3000:3000
@@ -16,14 +18,14 @@ services:
     depends_on:
       - api
     volumes:
-      - ./app/src:/app/src
-      - ./app/public:/app/public
+      - ${WEB_DIR_PATH}/src:/app/src
+      - ${WEB_DIR_PATH}/public:/app/public
 
   # Django API
   api:
     restart: on-failure
     build:
-      context: ./backend
+      context: ${API_DIR_PATH}
       dockerfile: Containerfile
     ports:
       - 8000:8000
@@ -36,11 +38,14 @@ services:
       - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
       - DB_HOST=db
       - DB_PORT=5432
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
     depends_on:
       db:
         condition: service_healthy
     volumes:
-      - ./backend/src:/app
+      - ${API_DIR_PATH}/src:/app
 
   # Postgres DB
   db:

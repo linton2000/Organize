@@ -1,3 +1,60 @@
-.vscode
+# Editors & OS junk
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Environment & secrets
 .env
+.env.*
+!*.example
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.log
+local_settings.py
+**/migrations/__pycache__/
+**/migrations/*.pyc
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.pipenv/
+.poetry/
+.mlvenv/
+
+# Python tooling caches
+.mypy_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.cache/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Node / frontend
+node_modules/
+.pnp/
+.pnp.js
+.npm/
+*.tsbuildinfo
+coverage/
+build/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Databases & storage
 *.sqlite3
+*.db
