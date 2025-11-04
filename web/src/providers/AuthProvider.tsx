@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useEffect, useState, useContext } from "react";
+import { createContext, useEffect, useState, useContext, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { User } from "scripts/types";
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
         }}
     , [csrfToken])
 
-    const login = async (username: string, password: string) => {
+    const login = useCallback(async (username: string, password: string) => {
         try {
             const authenticatedUser = await api_login(username, password);
             setUser(authenticatedUser);
@@ -44,9 +44,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
                 console.error("Unexpected login error", error);
             }
         }
-    }
+    }, [toast, navigate])
 
-    const refresh = async () => {
+    const refresh = useCallback(async () => {
         try {
             const currentUser = await api_me();
             setUser(currentUser);
@@ -67,9 +67,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             toast('An error occurred.', {variant: "error"});
             console.error("Unexpected refresh error", error);
         }
-    }
+    }, [toast])
 
-    const logout = async () => {
+    const logout = useCallback(async () => {
         try {
             await api_logout();
             setUser(null);
@@ -80,11 +80,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             toast('An error occurred.', {variant: "error"});
             console.error("Unexpected login error", error);
         }
-    }
+    }, [toast, navigate])
 
+    const contextValue = useMemo(
+        () => ({ user, login, refresh, logout }),
+        [user, login, refresh, logout]
+    );
 
     return (
-        <AuthContext.Provider value={{ user, login, refresh, logout }}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );

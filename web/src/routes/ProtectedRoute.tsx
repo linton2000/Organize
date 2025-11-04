@@ -8,18 +8,19 @@ import Layout from "routes/Layout";
 
 export default function ProtectedRoute() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const auth = useAuth();
+    const {user, refresh} = useAuth();
 
     useEffect(() => {
         // The active flag guards against updating state for an unmounted component.
         // e.g. when user navigates before auth.refresh() is done.
         let active = true;
         (async () => {
-            await auth.refresh();
+            await refresh();
             if (active) setIsLoading(false);
         })();
         return () => { active = false; };
-    }, [auth]);
+    // Can't just run on mount as user could logout in another tab (so need to detect if auth changes)
+    }, [refresh]);  // Need to use refresh rather than whole AuthContext as it's more stable
 
     if (isLoading) {
         return (
@@ -29,7 +30,7 @@ export default function ProtectedRoute() {
         );
     }
 
-    if (!auth.user) {
+    if (!user) {
         return <Navigate to='/login' replace />;
     }
 
