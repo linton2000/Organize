@@ -1,28 +1,34 @@
 from datetime import timedelta
-
 from django.utils import timezone
 from django.db import transaction
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from ..serializers import SessionSerializer
 from ..models import Session, Subject
+from .auth import CustomSessionAuthentication
 
 
 MAX_SESSION_DURATION = timedelta(hours=3)
 MIN_SESSION_DURATION = timedelta(minutes=3)
+
 
 class SessionViewSet(ModelViewSet):
     """ For fetching and creating sessions
     """
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
+    authentication_classes = [CustomSessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class StartSessionView(APIView):
     """Create a new session with the current server time as startDate."""
+    authentication_classes = [CustomSessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         subject_name = request.data.get("subject")
@@ -61,6 +67,8 @@ class StartSessionView(APIView):
 
 class ActiveSessionView(APIView):
     """Return details of the most recent session that is still running."""
+    authentication_classes = [CustomSessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         with transaction.atomic():
@@ -89,6 +97,8 @@ class ActiveSessionView(APIView):
 
 class EndSessionView(APIView):
     """Close the most recent session that is still running."""
+    authentication_classes = [CustomSessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         with transaction.atomic():
