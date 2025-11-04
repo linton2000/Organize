@@ -4,6 +4,9 @@ import { Button, Stack } from "@mui/material";
 import { startSession, getActiveSession, endSession } from "scripts/api_methods";
 import Timer from "./Timer";
 import SubjectSelector from "./SubjectSelector";
+import { useToast } from "providers/ToastProvider";
+import { checkErrorStatus } from "scripts/utils";
+
 
 interface LoggerProps {
     rerender: boolean;
@@ -15,19 +18,25 @@ interface LoggerProps {
 export default function Logger(props: LoggerProps) {
     const [startDate, setStartDate] = useState<string | null>(null);
     const [subject, setSubject] = useState<string>("");
+    const {toast, close} = useToast();
 
     useEffect(() => {
         async function loadActiveSession() {
             try {
-                const session = await getActiveSession();
-                if (session?.startDate && !session?.endDate) {
-                    setStartDate(session.startDate);
-                    setSubject(session.subject ?? "");
+                const activeSession = await getActiveSession();
+                if (!activeSession?.startDate || !activeSession?.endDate) {
+                    console.error("API returned an invalid active session" + activeSession.toString());
+                    toast("An error occurred.", {variant: "error"});
                 } else {
-                    setStartDate(null);
+                    setStartDate(activeSession.startDate);
+                    setSubject(activeSession.subject);
                 }
-            } catch (e) {
-                console.error(e);
+            } catch (error) {
+                if (checkErrorStatus(error, 404)) { // User hasn't started a session yet.
+                    return;    
+                }
+                console.error("Unexpected logger error.", error);
+                toast("An error occurred.", {variant: "error"});
             }
         };
 
