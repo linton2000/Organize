@@ -10,7 +10,7 @@ import ProfileMenu from "components/ProfileMenu";
 
 export default function Layout() {
     let navItemsList: Array<Array<string>> = [
-        ["Home", "/home"],
+        ["Home", "/"],
         ["Schedule", "/schedule"],
         ["Subject Management", "/subject-management"],
         ["Analytics", "/analytics"]
