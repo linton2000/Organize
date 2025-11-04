@@ -9,3 +9,4 @@ export const END_SESSION_URL: string = API_ROOT_URL + "end-session/";
 export const LOGIN_URL: string = API_ROOT_URL + "auth/login/";
 export const ME_URL: string = API_ROOT_URL + "auth/me/";
 export const LOGOUT_URL: string = API_ROOT_URL + "auth/logout/";
+export const CSRF_URL: string = API_ROOT_URL + "auth/csrf/";

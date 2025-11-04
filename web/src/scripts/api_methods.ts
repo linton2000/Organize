@@ -8,7 +8,8 @@ import {
 	END_SESSION_URL, 
 	LOGIN_URL,
 	ME_URL,
-	LOGOUT_URL 
+	LOGOUT_URL,
+	CSRF_URL
 } from "./constants";
 import { Session, Subject, Summary, User } from "./types";
 
@@ -69,6 +70,11 @@ async function logout(): Promise<void> {
 	await axios.post(LOGOUT_URL);
 }
 
+/** Makes API send a response with CSRF Token cookie set (needed for new users) */
+async function csrf(): Promise<void> {
+	await axios.get(CSRF_URL);
+}
+
 export { 
 	getAllSubjects, 
 	getAllSessions, 
@@ -78,5 +84,6 @@ export {
 	endSession,
 	login,
 	me,
-	logout
+	logout,
+	csrf
 };
