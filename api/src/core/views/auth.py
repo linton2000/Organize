@@ -3,17 +3,19 @@ from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from ..serializers import UserSerializer
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
+@authentication_classes([])
 def csrf_token_view(request):
     get_token(request)  # ensures the CSRF cookie is created/rotated
     return Response({'detail': 'Token successfully set in cookie!'}, status=status.HTTP_200_OK)
@@ -27,6 +29,8 @@ class CustomSessionAuthentication(SessionAuthentication):
 
 @method_decorator(csrf_protect, name="dispatch")
 class LoginView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
 
     def post(self, request: Request) -> Response:
         username = request.data.get("username")
