@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Interval } from "@scripts/types";
+import { Interval } from "scripts/types";
 
 export function formatSessionDate(dateStr: string): string {
     // Convert ISO datetime string to Unix ms timestamp and then to JS Date

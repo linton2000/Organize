@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 
 import LastWorked from "./LastWorked";
-import { getSummary } from "@scripts/api_methods";
-import { Summary } from "@scripts/types";
+import { getSummary } from "scripts/api_methods";
+import { Summary } from "scripts/types";
 
 interface QuickSummaryProps {
     rerender: boolean;

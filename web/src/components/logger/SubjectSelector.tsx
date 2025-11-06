@@ -4,9 +4,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-import { Subject } from "@scripts/types";
-import { getAllSubjects } from "@scripts/api_methods";
-import { useToast } from "@providers/ToastProvider";
+import { Subject } from "scripts/types";
+import { getAllSubjects } from "scripts/api_methods";
+import { useToast } from "providers/ToastProvider";
 
 type SubSelProps = {
     subject: string;

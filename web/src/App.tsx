@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Login from "@routes/Login";
-import Home from "@routes/Home";
-import Schedule from "@routes/Schedule";
-import SubjectManagement from "@routes/SubjectManagement";
-import Analytics from "@routes/Analytics";
-import ProtectedRoute from "@routes/ProtectedRoute";
-import { AuthProvider } from "@providers/AuthProvider";
-import { ToastProvider } from "@providers/ToastProvider";
+import Login from "routes/Login";
+import Home from "routes/Home";
+import Schedule from "routes/Schedule";
+import SubjectManagement from "routes/SubjectManagement";
+import Analytics from "routes/Analytics";
+import ProtectedRoute from "routes/ProtectedRoute";
+import { AuthProvider } from "providers/AuthProvider";
+import { ToastProvider } from "providers/ToastProvider";
 
 export default function App() {
     useEffect(() => {

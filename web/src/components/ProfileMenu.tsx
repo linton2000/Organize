@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { useAuth } from "@providers/AuthProvider";
+import { useAuth } from "providers/AuthProvider";
 
 export default function ProfileMenu() {
     // anchorEL is the element that MUI uses to decide menu placement
