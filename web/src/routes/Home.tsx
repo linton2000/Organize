@@ -10,18 +10,18 @@ export default function Home() {
 
     return (
         <Grid container spacing={0} columns={28}>
-            <Grid item xs={1} />
-            <Grid item xs={16}>
+            <Grid size={1} />
+            <Grid size={16}>
                 <HomeCalendar rerender={rerender} setRerender={setRerender} />
             </Grid>
-            <Grid item xs={2} />
-            <Grid item xs={8}>
-                <Grid item maxHeight={375} xs={20}>
+            <Grid size={2} />
+            <Grid size={8}>
+                <Grid maxHeight={375} size={20}>
                     <Paper elevation={10} sx={{ padding: 5, marginTop: 5 }}>
                         <Logger rerender={rerender} setRerender={setRerender} />
                     </Paper>
                 </Grid>
-                <Grid item xs={28}>
+                <Grid size={28}>
                     <QuickSummary
                         rerender={rerender}
                         setRerender={setRerender}
