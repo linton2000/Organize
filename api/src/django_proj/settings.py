@@ -159,7 +159,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # WhiteNoise-specific config to serve static assets for admin site
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# BASE_DIR.parent chucks these assets outside /src to prevent hot reloading
+STATIC_ROOT = BASE_DIR.parent / "staticfiles"   
 
 STORAGES = {
     "staticfiles": {
