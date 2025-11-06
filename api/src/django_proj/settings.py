@@ -10,39 +10,51 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
-from dotenv import load_dotenv
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env(name: str) -> str:
+    """ Abort startup if an env var is not provided.
+    """
+    value = os.getenv(name)
+    if not value:
+        raise ImproperlyConfigured(f"Required environment variable {name} is missing")
+    return value
+
+def get_list(name):
+    """ Needed to read & pass in an array of origins/hosts from env var
+    """
+    value = get_env(name)
+    return [item.strip() for item in value.split(',') if item.strip()]
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-load_dotenv()
-SECRET_KEY = os.getenv('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'true').lower() == 'true'
-
-def get_list(name):
-    value = os.getenv(name, '')
-    return [item.strip() for item in value.split(',') if item.strip()]
-
-# CORS & Other Security settings
+# General Security
+SECRET_KEY = get_env('SECRET_KEY')
 ALLOWED_HOSTS = get_list('ALLOWED_HOSTS')
-CORS_ALLOWED_ORIGINS = get_list('CORS_ALLOWED_ORIGINS')
+DEBUG = get_env('DJANGO_DEBUG').lower() == 'true'   # Parse & convert to bool
+
+# HTTPS Enforcement
+SECURE_SSL_REDIRECT = get_env('SECURE_SSL_REDIRECT').lower() == 'true'
+SECURE_HSTS_SECONDS = int(get_env('SECURE_HSTS_SECONDS'))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = get_env('SECURE_HSTS_INCLUDE_SUBDOMAINS').lower() == 'true'
+SECURE_HSTS_PRELOAD = get_env('SECURE_HSTS_PRELOAD').lower() == 'true'
+
+# CORS Protection
+CORS_ALLOWED_ORIGINS = get_list('FRONTEND_ORIGINS')
 CORS_ALLOW_CREDENTIALS = True
 
-# Session Auth settings
+# Session Auth
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 
-# CSRF Settings
-CSRF_ALLOWED_ORIGINS = get_list('CSRF_ALLOWED_ORIGINS')
-CSRF_TRUSTED_ORIGINS = get_list('CSRF_TRUSTED_ORIGINS')
+# CSRF Protection
+CSRF_ALLOWED_ORIGINS = get_list('FRONTEND_ORIGINS')
+CSRF_TRUSTED_ORIGINS = get_list('FRONTEND_ORIGINS')
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = False    # Frontend needs to read CSRF token
 CSRF_COOKIE_SAMESITE = 'Lax'
@@ -72,7 +84,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.common.CommonMiddleware'
 ]
 
 ROOT_URLCONF = 'django_proj.urls'
@@ -101,12 +112,12 @@ WSGI_APPLICATION = 'django_proj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'db'),
-        'PORT': os.getenv('DB_PORT', '5432'),
-        'CONN_MAX_AGE': int(os.getenv('DB_CONN_MAX_AGE', '60')),
+        'NAME': get_env('DB_NAME'),
+        'USER': get_env('DB_USER'),
+        'PASSWORD': get_env('DB_PASSWORD'),
+        'HOST': get_env('DB_HOST'),
+        'PORT': get_env('DB_PORT'),
+        'CONN_MAX_AGE': int(get_env('DB_CONN_MAX_AGE')),
     }
 }
 
@@ -148,7 +159,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # WhiteNoise-specific config to serve static assets for admin site
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# BASE_DIR.parent chucks these assets outside /src to prevent hot reloading
+STATIC_ROOT = BASE_DIR.parent / "staticfiles"   
 
 STORAGES = {
     "staticfiles": {
@@ -160,3 +172,39 @@ STORAGES = {
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "json": {
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "json",
+        },
+    },
+    "root": {
+        "level": "INFO",
+        "handlers": ["console"],
+    },
+    "loggers": {
+        "django": {"level": "INFO", "handlers": ["console"], "propagate": False},
+        "django.request": {"level": "WARNING", "handlers": ["console"], "propagate": False},
+    },
+}

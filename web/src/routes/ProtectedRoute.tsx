@@ -5,10 +5,9 @@ import { CircularProgress, Box } from "@mui/material";
 import { useAuth } from "providers/AuthProvider";
 import Layout from "routes/Layout";
 
-
 export default function ProtectedRoute() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const {user, refresh} = useAuth();
+    const { user, refresh } = useAuth();
 
     useEffect(() => {
         // The active flag guards against updating state for an unmounted component.
@@ -18,9 +17,11 @@ export default function ProtectedRoute() {
             await refresh();
             if (active) setIsLoading(false);
         })();
-        return () => { active = false; };
-    // Can't just run on mount as user could logout in another tab (so need to detect if auth changes)
-    }, [refresh]);  // Need to use refresh rather than whole AuthContext as it's more stable
+        return () => {
+            active = false;
+        };
+        // Can't just run on mount as user could logout in another tab (so need to detect if auth changes)
+    }, [refresh]); // Need to use refresh rather than whole AuthContext as it's more stable
 
     if (isLoading) {
         return (
@@ -31,7 +32,7 @@ export default function ProtectedRoute() {
     }
 
     if (!user) {
-        return <Navigate to='/login' replace />;
+        return <Navigate to="/login" replace />;
     }
 
     return <Layout />;

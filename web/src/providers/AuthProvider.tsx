@@ -1,12 +1,23 @@
 import axios from "axios";
-import { createContext, useEffect, useState, useContext, useMemo, useCallback } from "react";
+import {
+    createContext,
+    useEffect,
+    useState,
+    useContext,
+    useMemo,
+    useCallback,
+} from "react";
 import { useNavigate } from "react-router-dom";
 
 import { User } from "scripts/types";
 import { checkErrorStatus, getCookie } from "scripts/utils";
-import { login as api_login, me as api_me, logout as api_logout, csrf} from "scripts/api_methods";
+import {
+    login as api_login,
+    me as api_me,
+    logout as api_logout,
+    csrf,
+} from "scripts/api_methods";
 import { useToast } from "providers/ToastProvider";
-
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 type AuthContextValue = {
@@ -14,12 +25,14 @@ type AuthContextValue = {
     login: (username: string, password: string) => Promise<void>;
     refresh: () => Promise<void>;
     logout: () => Promise<void>;
-}
+};
 
-export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
-    const [csrfToken, setCsrfToken] = useState<string | undefined>(getCookie('csrftoken'));
-    const {toast, errorToast} = useToast();
+    const [csrfToken, setCsrfToken] = useState<string | undefined>(
+        getCookie("csrftoken")
+    );
+    const { toast, errorToast } = useToast();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,29 +40,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             axios.defaults.headers.common["X-CSRFToken"] = csrfToken;
         } else {
             void (async () => {
-                await csrf();   // Gets api to set CSRF Token as cookie
-                setCsrfToken(getCookie('csrftoken')); // Need to trigger state update to run the if clause
+                await csrf(); // Gets api to set CSRF Token as cookie
+                setCsrfToken(getCookie("csrftoken")); // Need to trigger state update to run the if clause
             })();
-        }}
-    , [csrfToken])
-
-    const login = useCallback(async (username: string, password: string) => {
-        try {
-            const authenticatedUser = await api_login(username, password);
-            setUser(authenticatedUser);
-            setCsrfToken(getCookie("csrftoken"));  // Update with new CSRF token
-            toast('Logged In Successfully!', {variant: "success"});
-            navigate('/');
-        } catch (error) {
-            if (checkErrorStatus(error, 401))
-                toast('Incorrect username or password.', {variant: "warning"});
-            else {
-                // Unexpected error
-                errorToast();
-                console.error("Unexpected login error", error);
-            }
         }
-    }, [toast, navigate])
+    }, [csrfToken]);
+
+    const login = useCallback(
+        async (username: string, password: string) => {
+            try {
+                const authenticatedUser = await api_login(username, password);
+                setUser(authenticatedUser);
+                setCsrfToken(getCookie("csrftoken")); // Update with new CSRF token
+                toast("Logged In Successfully!", { variant: "success" });
+                navigate("/");
+            } catch (error) {
+                if (checkErrorStatus(error, 401))
+                    toast("Incorrect username or password.", {
+                        variant: "warning",
+                    });
+                else {
+                    // Unexpected error
+                    errorToast();
+                    console.error("Unexpected login error", error);
+                }
+            }
+        },
+        [toast, navigate]
+    );
 
     const refresh = useCallback(async () => {
         try {
@@ -72,20 +90,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             errorToast();
             console.error("Unexpected refresh error", error);
         }
-    }, [toast])
+    }, [toast]);
 
     const logout = useCallback(async () => {
         try {
             await api_logout();
             setUser(null);
-            toast('Logged Out Successfully!', {variant: "success"});
-            navigate('/login');
+            toast("Logged Out Successfully!", { variant: "success" });
+            navigate("/login");
         } catch (error) {
             // Unexpected error
             errorToast();
             console.error("Unexpected login error", error);
         }
-    }, [toast, navigate])
+    }, [toast, navigate]);
 
     const contextValue = useMemo(
         () => ({ user, login, refresh, logout }),
@@ -97,13 +115,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             {children}
         </AuthContext.Provider>
     );
-
-}
+};
 
 export const useAuth = (): AuthContextValue => {
-    const context =  useContext(AuthContext);
+    const context = useContext(AuthContext);
     if (!context) {
-        throw new Error('Custom hook useAuth received null context.')
+        throw new Error("Custom hook useAuth received null context.");
     }
     return context;
-}
+};

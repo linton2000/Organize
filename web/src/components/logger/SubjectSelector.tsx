@@ -6,28 +6,31 @@ import Select from "@mui/material/Select";
 
 import { Subject } from "scripts/types";
 import { getAllSubjects } from "scripts/api_methods";
+import { useToast } from "providers/ToastProvider";
 
 type SubSelProps = {
-    subject: string,
-    onSubjectChange: (value: string) => void,
-    isDisabled: boolean
+    subject: string;
+    onSubjectChange: (value: string) => void;
+    isDisabled: boolean;
 };
 
 export default function SubjectSelector(props: SubSelProps) {
     const [subjects, setSubjects] = useState<Subject[]>([]);
+    const { toast, errorToast } = useToast();
 
     useEffect(() => {
-
         async function loadActiveSubjects() {
             try {
-                setSubjects((await getAllSubjects()).filter(subject => subject.isActive));
+                const allSubjects = await getAllSubjects();
+                setSubjects(allSubjects.filter((subject) => subject.isActive));
             } catch (e) {
-                console.error(e);
+                console.error("Unexpected subject selector error.", e);
+                errorToast();
             }
         }
 
         loadActiveSubjects();
-    }, [])
+    }, []);
 
     return (
         <FormControl fullWidth>
@@ -37,14 +40,16 @@ export default function SubjectSelector(props: SubSelProps) {
                 id="demo-simple-select"
                 value={props.subject}
                 label="subject"
-                onChange={ (e) => props.onSubjectChange(e.target.value)}
+                onChange={(e) => props.onSubjectChange(e.target.value)}
                 disabled={props.isDisabled}
             >
                 <MenuItem value="">
                     <em>None</em>
                 </MenuItem>
                 {subjects.map((subject) => (
-                    <MenuItem key={subject.name} value={subject.name}>{subject.name}</MenuItem>
+                    <MenuItem key={subject.name} value={subject.name}>
+                        {subject.name}
+                    </MenuItem>
                 ))}
             </Select>
         </FormControl>

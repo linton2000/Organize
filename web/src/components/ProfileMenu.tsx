@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Button, Divider, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
+import {
+    Button,
+    Divider,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    Typography,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 import { useAuth } from "providers/AuthProvider";
@@ -9,7 +17,7 @@ export default function ProfileMenu() {
     // Here it's placed below the profile button. When null, the menu just closes.
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const auth = useAuth()
+    const auth = useAuth();
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -22,9 +30,9 @@ export default function ProfileMenu() {
         <div>
             <Button
                 id="basic-button"
-                aria-controls={open ? 'basic-menu' : undefined}
+                aria-controls={open ? "basic-menu" : undefined}
                 aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
+                aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
                 variant="contained"
                 color="secondary"
@@ -38,16 +46,18 @@ export default function ProfileMenu() {
                 onClose={handleClose}
             >
                 <MenuItem disabled disableRipple>
-                    <Typography>{auth.user?.first_name} {auth.user?.last_name}</Typography>
+                    <Typography>
+                        {auth.user?.first_name} {auth.user?.last_name}
+                    </Typography>
                 </MenuItem>
-                <Divider/>
+                <Divider />
                 <MenuItem onClick={() => auth.logout()}>
                     <ListItemIcon>
-                        <LogoutIcon/>
+                        <LogoutIcon />
                     </ListItemIcon>
                     <ListItemText> Logout </ListItemText>
                 </MenuItem>
             </Menu>
         </div>
-    )
+    );
 }

@@ -19,7 +19,13 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "baseUrl": "src"
+    "baseUrl": "./src",
+    "paths": {
+      "routes/*": ["routes/*"],
+      "components/*": ["components/*"],
+      "scripts/*": ["scripts/*"],
+      "providers/*": ["providers/*"],
+    }
   },
   "include": [
     "src"

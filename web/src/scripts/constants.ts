@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL ?? "";
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "";
 export const API_ROOT_URL: string = `${API_BASE_URL.replace(/\/+$/, "")}/api/`;
 export const SESSION_URL: string = API_ROOT_URL + "session/";
 export const SUBJECT_URL: string = API_ROOT_URL + "subject/";

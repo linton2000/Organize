@@ -11,7 +11,7 @@ interface CalendarProps {
 }
 
 interface CalendarState {
-    events: Event[]
+    events: Event[];
 }
 
 export default class HomeCalendar extends React.Component<
@@ -21,10 +21,12 @@ export default class HomeCalendar extends React.Component<
     formats: object;
     constructor(props: CalendarProps) {
         super(props);
-        this.state = {events: []}
+        this.state = { events: [] };
         this.formats = {
-            eventTimeRangeFormat: () => {""}
-        }
+            eventTimeRangeFormat: () => {
+                ("");
+            },
+        };
     }
 
     populateEvents(getSessions: Session[]) {
@@ -34,10 +36,10 @@ export default class HomeCalendar extends React.Component<
                 newEvents.push({
                     title: session.subject,
                     start: new Date(session.startDate),
-                    end: new Date(session.endDate)
+                    end: new Date(session.endDate),
                 });
         }
-        this.setState({events: newEvents});
+        this.setState({ events: newEvents });
     }
 
     componentWillMount() {

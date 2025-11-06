@@ -1,15 +1,11 @@
 # Simple dev container for React frontend app
-FROM docker.io/node:20
+FROM docker.io/node:22
 
-# Copy TypeScript config & install react dependencies into /app
+# Copy TS & Vite config & install react dependencies into /app
 WORKDIR /app
-COPY ./tsconfig.json ./package.json ./
+COPY package.json package-lock.json tsconfig.json vite.config.ts index.html ./
 RUN npm install
 
-# Will make this dynamic later (bind mounts)
-COPY ./public ./public
-COPY ./src ./src
-
-# Hosting on localhost:3000
+# Hosting on localhost:3000 (using bind mounts to /src & /public in compose.yml)
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]

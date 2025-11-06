@@ -9,10 +9,7 @@ interface LogTableState {
     rows: Row[];
 }
 
-export default class LogTable extends React.Component<
-    any,
-    LogTableState
-> {
+export default class LogTable extends React.Component<any, LogTableState> {
     constructor(props: any) {
         super(props);
         this.state = { rows: [] };
