@@ -10,7 +10,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_API_URL=${REACT_APP_API_URL}
+      - VITE_API_URL=${VITE_API_URL}
       - HOST=${HOST}
       - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING}
       - WATCHPACK_POLLING=${WATCHPACK_POLLING}
