@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd /app/src
+cd /app
 
 python manage.py collectstatic --noinput
 python manage.py migrate
