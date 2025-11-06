@@ -1,21 +1,20 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Login from "routes/Login"
-import Home from "routes/Home";
-import Schedule from "routes/Schedule";
-import SubjectManagement from "routes/SubjectManagement";
-import Analytics from "routes/Analytics";
-import ProtectedRoute from "routes/ProtectedRoute";
-import { AuthProvider } from "providers/AuthProvider";
-import { ToastProvider } from "providers/ToastProvider";
+import Login from "src/routes/Login";
+import Home from "src/routes/Home";
+import Schedule from "src/routes/Schedule";
+import SubjectManagement from "src/routes/SubjectManagement";
+import Analytics from "src/routes/Analytics";
+import ProtectedRoute from "src/routes/ProtectedRoute";
+import { AuthProvider } from "src/providers/AuthProvider";
+import { ToastProvider } from "src/providers/ToastProvider";
 
 export default function App() {
-
     useEffect(() => {
         document.title = "TimeBoxer";
     }, []);
-    
+
     return (
         <ToastProvider>
             <BrowserRouter>
@@ -26,7 +25,10 @@ export default function App() {
                             <Route index element={<Home />} />
                             <Route path="schedule" element={<Schedule />} />
                             <Route path="analytics" element={<Analytics />} />
-                            <Route path="subject-management" element={<SubjectManagement />} />
+                            <Route
+                                path="subject-management"
+                                element={<SubjectManagement />}
+                            />
                         </Route>
                     </Routes>
                 </AuthProvider>

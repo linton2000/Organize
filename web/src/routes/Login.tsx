@@ -5,13 +5,12 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
-import { useAuth } from "providers/AuthProvider";
-
+import { useAuth } from "src/providers/AuthProvider";
 
 export default function Login() {
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);   // To prevent resubmits while waiting
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false); // To prevent resubmits while waiting
     const auth = useAuth();
 
     const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
@@ -23,7 +22,8 @@ export default function Login() {
         setIsSubmitting(true);
         try {
             await auth.login(username, password);
-        } catch(e) {} finally {
+        } catch (e) {
+        } finally {
             setIsSubmitting(false);
         }
     };
@@ -32,12 +32,12 @@ export default function Login() {
 
     return (
         <Grid
-        container
-        columns={12}
-        spacing={0}
-        sx={{ minHeight: '100vh' }}
-        alignItems="center"
-        justifyContent="center"
+            container
+            columns={12}
+            spacing={0}
+            sx={{ minHeight: "100vh" }}
+            alignItems="center"
+            justifyContent="center"
         >
             <Grid item xs={4}>
                 <Stack
@@ -45,12 +45,13 @@ export default function Login() {
                     onSubmit={handleLogin}
                     spacing={3}
                     sx={{
-                        border: '1px solid',
-                        borderColor: 'divider',   // theme-aware neutral color
-                        borderRadius: 2,          // theme.spacing(2) radius
-                        padding: 4,               // padding inside the outline
-                        backgroundColor: 'background.paper',
-                    }}>
+                        border: "1px solid",
+                        borderColor: "divider", // theme-aware neutral color
+                        borderRadius: 2, // theme.spacing(2) radius
+                        padding: 4, // padding inside the outline
+                        backgroundColor: "background.paper",
+                    }}
+                >
                     <Typography variant="h5" align="center">
                         Login to your Account
                     </Typography>

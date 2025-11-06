@@ -11,7 +11,7 @@ import Paper from "@mui/material/Paper";
 import TableHead from "@mui/material/TableHead";
 import TablePaginationActions from "./TablePaginationActions";
 
-import { Row } from "scripts/types";
+import { Row } from "src/scripts/types";
 
 export default function LogTableUI(props: any) {
     const rows: Row[] = props.rows as Row[];

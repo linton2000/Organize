@@ -5,11 +5,11 @@ import {
     startSession,
     getActiveSession,
     endSession,
-} from "scripts/api_methods";
+} from "src/scripts/api_methods";
 import Timer from "./Timer";
 import SubjectSelector from "./SubjectSelector";
-import { useToast } from "providers/ToastProvider";
-import { checkErrorStatus } from "scripts/utils";
+import { useToast } from "src/providers/ToastProvider";
+import { checkErrorStatus } from "src/scripts/utils";
 
 interface LoggerProps {
     rerender: boolean;

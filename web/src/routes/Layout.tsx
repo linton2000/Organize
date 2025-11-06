@@ -5,15 +5,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-import DefaultDrawer from "components/DefaultDrawer";
-import ProfileMenu from "components/ProfileMenu";
+import DefaultDrawer from "src/components/DefaultDrawer";
+import ProfileMenu from "src/components/ProfileMenu";
 
 export default function Layout() {
     let navItemsList: Array<Array<string>> = [
         ["Home", "/"],
         ["Schedule", "/schedule"],
         ["Subject Management", "/subject-management"],
-        ["Analytics", "/analytics"]
+        ["Analytics", "/analytics"],
     ];
 
     return (
@@ -24,7 +24,12 @@ export default function Layout() {
                 sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
             >
                 <Toolbar>
-                    <Typography variant="h4" noWrap component="div" sx={{ flexGrow: 1 }}>
+                    <Typography
+                        variant="h4"
+                        noWrap
+                        component="div"
+                        sx={{ flexGrow: 1 }}
+                    >
                         TimeBoxer
                     </Typography>
                     <Box sx={{ mr: 8 }}>
