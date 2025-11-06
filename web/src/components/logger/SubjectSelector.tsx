@@ -6,6 +6,8 @@ import Select from "@mui/material/Select";
 
 import { Subject } from "scripts/types";
 import { getAllSubjects } from "scripts/api_methods";
+import { useToast } from "providers/ToastProvider";
+
 
 type SubSelProps = {
     subject: string,
@@ -15,14 +17,17 @@ type SubSelProps = {
 
 export default function SubjectSelector(props: SubSelProps) {
     const [subjects, setSubjects] = useState<Subject[]>([]);
+    const {toast, errorToast} = useToast();
 
     useEffect(() => {
 
         async function loadActiveSubjects() {
             try {
-                setSubjects((await getAllSubjects()).filter(subject => subject.isActive));
+                const allSubjects = await getAllSubjects();
+                setSubjects(allSubjects.filter((subject) => subject.isActive));
             } catch (e) {
-                console.error(e);
+                console.error("Unexpected subject selector error.", e);
+                errorToast();
             }
         }
 
