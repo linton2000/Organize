@@ -5,8 +5,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-import DefaultDrawer from "src/components/DefaultDrawer";
-import ProfileMenu from "src/components/ProfileMenu";
+import DefaultDrawer from "@components/DefaultDrawer";
+import ProfileMenu from "@components/ProfileMenu";
 
 export default function Layout() {
     let navItemsList: Array<Array<string>> = [

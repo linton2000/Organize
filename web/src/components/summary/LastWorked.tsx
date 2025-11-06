@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { red, orange, yellow, green, purple } from "@mui/material/colors";
-import { calcInterval } from "src/scripts/utils";
-import { Interval } from "src/scripts/types";
+import { calcInterval } from "@scripts/utils";
+import { Interval } from "@scripts/types";
 
 export default function LastWorked(props: { lastWorkedDate: string | null }) {
     // Update elapsed time in summary every minute

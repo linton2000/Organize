@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { CircularProgress, Box } from "@mui/material";
 
-import { useAuth } from "src/providers/AuthProvider";
-import Layout from "src/src/routes/Layout";
+import { useAuth } from "@providers/AuthProvider";
+import Layout from "@@routes/Layout";
 
 export default function ProtectedRoute() {
     const [isLoading, setIsLoading] = useState<boolean>(true);

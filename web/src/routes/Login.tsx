@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
-import { useAuth } from "src/providers/AuthProvider";
+import { useAuth } from "@providers/AuthProvider";
 
 export default function Login() {
     const [username, setUsername] = useState<string>("");

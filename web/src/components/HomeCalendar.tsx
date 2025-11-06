@@ -2,8 +2,8 @@ import * as React from "react";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Event, Session } from "src/scripts/types";
-import { getAllSessions } from "src/scripts/api_methods";
+import { Event, Session } from "@scripts/types";
+import { getAllSessions } from "@scripts/api_methods";
 
 interface CalendarProps {
     rerender: boolean;

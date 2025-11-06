@@ -9,15 +9,15 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { User } from "src/scripts/types";
-import { checkErrorStatus, getCookie } from "src/scripts/utils";
+import { User } from "@scripts/types";
+import { checkErrorStatus, getCookie } from "@scripts/utils";
 import {
     login as api_login,
     me as api_me,
     logout as api_logout,
     csrf,
-} from "src/scripts/api_methods";
-import { useToast } from "src/providers/ToastProvider";
+} from "@scripts/api_methods";
+import { useToast } from "@providers/ToastProvider";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 type AuthContextValue = {
