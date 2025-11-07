@@ -30,6 +30,18 @@ $$;
 """
 
 
+def rename_tables_forward(apps, schema_editor):
+    if schema_editor.connection.vendor != "postgresql":
+        return
+    schema_editor.execute(RENAME_TABLES_FORWARD)
+
+
+def rename_tables_backward(apps, schema_editor):
+    if schema_editor.connection.vendor != "postgresql":
+        return
+    schema_editor.execute(RENAME_TABLES_BACKWARD)
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -37,10 +49,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL(
-            sql=RENAME_TABLES_FORWARD,
-            reverse_sql=RENAME_TABLES_BACKWARD,
-        ),
+        migrations.RunPython(rename_tables_forward, rename_tables_backward),
         migrations.RunSQL(
             sql="UPDATE django_content_type SET app_label = 'core' WHERE app_label = 'organize';",
             reverse_sql="UPDATE django_content_type SET app_label = 'organize' WHERE app_label = 'core';",
@@ -50,4 +59,3 @@ class Migration(migrations.Migration):
             reverse_sql="UPDATE django_migrations SET app = 'organize' WHERE app = 'core';",
         ),
     ]
-
