@@ -1,0 +1,9 @@
+name: sandpit
+run-name: Sandpit workflow run no. ${{ github.run_number }}
+on: [push]
+jobs:
+  sandpit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: cat /api/requirements.txt
