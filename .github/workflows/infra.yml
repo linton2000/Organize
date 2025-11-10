@@ -8,9 +8,12 @@ on:
     branches: ['main']
     paths: ['infra/**']
 
+env:
+  TF_LOG: INFO
+  
 jobs:
-  plan:
-    name: 'Terraform Plan'
+  terraform:
+    name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
     defaults:
      run:
@@ -18,10 +21,72 @@ jobs:
        working-directory: ./infra     # TF files are here
 
     steps:
-     - name: Checkout the repository to the runner.
-       uses: actions/checkout@v2
+      - name: 'Checkout the repository to the runner.'
+        uses: actions/checkout@v4
 
-     - name: Setup Terraform with specified version on the runner
-       uses: hashicorp/setup-terraform@v2
-       with:
-         terraform_version: 1.3.0
+      - name: 'Setup Terraform with specified version on the runner'
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0     # Current stable (GA)
+
+      - name: 'Terraform Initialize'
+        id: init
+        run: terraform init -backend-config="...TODO..."
+
+      - name: 'Terraform Format Check'
+        id: fmt
+        run: terraform fmt -check     # '-check' arg asks to not reformat
+
+      - name: 'Terraform Validate'
+        id: validate
+        run: terraform validate
+
+      - name: 'Terraform Plan'
+        id: plan
+        if: github.event_name == 'pull_request'
+        run:  |   # Need this monstrosity to make plan output available to comment step (below)
+          set -o pipefail
+          terraform plan -no-color -input=false | tee plan.out
+          {
+            echo 'plan<<EOF'
+            cat plan.out
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+      
+      - name: 'GitHub: Add comment to PR'
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN:  ${{ steps.plan.outputs.plan }}
+        with:
+          script: |
+            const output = `#### Terraform Format and Style 🖌 \`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️ \`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖 \`${{ steps.validate.outcome }}\`
+            #### Terraform Plan 📖 \`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
+
+        
