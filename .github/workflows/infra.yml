@@ -8,24 +8,26 @@ permissions:
 on:                       # Plan on PR, Apply on merge
   push:
     branches: ['main']
-    paths: ['infra/**']
+    paths: ['infra/**', '.github/workflows/infra.yml']
   pull_request:
     branches: ['main']
-    paths: ['infra/**']
-
-env:
-  TF_LOG: INFO
+    paths: ['infra/**', '.github/workflows/infra.yml']
   
 jobs:
   terraform:
-    environment:
-      name: prodenv
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
     defaults:
      run:
        shell: bash
        working-directory: ./infra     # TF files are here
+    
+    environment:
+      name: prodenv       # Used for both vars/secret & Azure OIDC Auth
+    env:
+      TF_LOG: INFO
+      TF_VAR_app_rg_name: ${{ vars.APP_RG_NAME }}
+      TF_VAR_azure_region: ${{ vars.AZURE_REGION }}
 
     steps:
       - name: 'Checkout the repository to the runner.'
