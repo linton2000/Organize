@@ -1,6 +1,11 @@
 name: 'Terraform Infra Pipeline'
 run-name: 'TF infra workflow run no. ${{ github.run_number }}'
-on:
+permissions:
+  id-token: write         # sign a GitHub JWT for Azure OIDC Auth
+  contents: read          # checkout (/infra dir)
+  pull-requests: write    # github-script comment
+
+on:                       # Plan on PR, Apply on merge
   push:
     branches: ['main']
     paths: ['infra/**']
@@ -13,6 +18,8 @@ env:
   
 jobs:
   terraform:
+    environment:
+      name: prodenv
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
     defaults:
@@ -24,14 +31,25 @@ jobs:
       - name: 'Checkout the repository to the runner.'
         uses: actions/checkout@v4
 
-      - name: 'Setup Terraform with specified version on the runner'
+      - name: 'Setup Terraform with specified version on the runner.'
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.6.0     # Current stable (GA)
 
+      - name: 'Login to Azure with OIDC federated credentials.'
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       - name: 'Terraform Initialize'
         id: init
-        run: terraform init -backend-config="...TODO..."
+        run: terraform init \
+          -backend-config="resource_group_name=${{ vars.PROJ_RG_NAME }}" \
+          -backend-config="storage_account_name=${{ vars.PROJ_STR_ACCT }}" \
+          -backend-config="container_name=${{ vars.TF_STR_CNTR }}" \
+          -backend-config="key=${{ vars.TF_STATE_KEY }}"
 
       - name: 'Terraform Format Check'
         id: fmt
@@ -88,5 +106,3 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
-
-        
