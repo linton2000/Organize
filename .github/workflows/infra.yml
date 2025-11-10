@@ -47,11 +47,12 @@ jobs:
 
       - name: 'Terraform Initialize'
         id: init
-        run: terraform init \
-          -backend-config="resource_group_name=${{ vars.PROJ_RG_NAME }}" \
-          -backend-config="storage_account_name=${{ vars.PROJ_STR_ACCT }}" \
-          -backend-config="container_name=${{ vars.TF_STR_CNTR }}" \
-          -backend-config="key=${{ vars.TF_STATE_KEY }}"
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ vars.PROJ_RG_NAME }}" \
+            -backend-config="storage_account_name=${{ vars.PROJ_STR_ACCT }}" \
+            -backend-config="container_name=${{ vars.TF_STR_CNTR }}" \
+            -backend-config="key=${{ vars.TF_STATE_KEY }}"
 
       - name: 'Terraform Format Check'
         id: fmt
