@@ -28,6 +28,10 @@ jobs:
       TF_LOG: INFO
       TF_VAR_app_rg_name: ${{ vars.APP_RG_NAME }}
       TF_VAR_azure_region: ${{ vars.AZURE_REGION }}
+      ARM_USE_OIDC: true
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}   # Needed by TF azurerm provider to setup OIDC auth
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     steps:
       - name: 'Checkout the repository to the runner.'
