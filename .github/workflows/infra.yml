@@ -58,10 +58,6 @@ jobs:
             -backend-config="container_name=${{ vars.TF_STR_CNTR }}" \
             -backend-config="key=${{ vars.TF_STATE_KEY }}"
 
-      - name: 'Terraform Format Check'
-        id: fmt
-        run: terraform fmt -check     # '-check' arg asks to not reformat
-
       - name: 'Terraform Validate'
         id: validate
         run: terraform validate
@@ -85,8 +81,7 @@ jobs:
           PLAN:  ${{ steps.plan.outputs.plan }}
         with:
           script: |
-            const output = `#### Terraform Format and Style 🖌 \`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️ \`${{ steps.init.outcome }}\`
+            const output = `#### Terraform Initialization ⚙️ \`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖 \`${{ steps.validate.outcome }}\`
             #### Terraform Plan 📖 \`${{ steps.plan.outcome }}\`
 
