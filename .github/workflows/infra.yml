@@ -1,0 +1,27 @@
+name: 'Terraform Infra Pipeline'
+run-name: 'TF infra workflow run no. ${{ github.run_number }}'
+on:
+  push:
+    branches: ['main']
+    paths: ['infra/**']
+  pull_request:
+    branches: ['main']
+    paths: ['infra/**']
+
+jobs:
+  plan:
+    name: 'Terraform Plan'
+    runs-on: ubuntu-latest
+    defaults:
+     run:
+       shell: bash
+       working-directory: ./infra     # TF files are here
+
+    steps:
+     - name: Checkout the repository to the runner.
+       uses: actions/checkout@v2
+
+     - name: Setup Terraform with specified version on the runner
+       uses: hashicorp/setup-terraform@v2
+       with:
+         terraform_version: 1.3.0
