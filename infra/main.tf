@@ -19,6 +19,7 @@ provider "azurerm" {
   use_oidc = true
 }
 
+# TimeBoxer App RG
 resource "azurerm_resource_group" "app_rg" {
   name     = var.app_rg_name
   location = var.azure_region
